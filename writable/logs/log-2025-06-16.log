@@ -1,0 +1,8 @@
+CRITICAL - 2025-06-16 11:10:47 --> ErrorException: date_default_timezone_set(): Timezone ID 'Asia/KualaLumpur' is invalid
+[Method: GET, Route: /]
+in SYSTEMPATH\CodeIgniter.php on line 192.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(8, 'date_default_timezone_set(): Timezone ID \'Asia/KualaLumpur\' is invalid', 'C:\\xampp\\htdocs\\CRM_CI4\\system\\CodeIgniter.php', 192)
+ 2 SYSTEMPATH\CodeIgniter.php(192): date_default_timezone_set('Asia/KualaLumpur')
+ 3 SYSTEMPATH\Boot.php(321): CodeIgniter\CodeIgniter->initialize()
+ 4 SYSTEMPATH\Boot.php(66): CodeIgniter\Boot::initializeCodeIgniter()
+ 5 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
