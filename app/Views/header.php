@@ -50,7 +50,7 @@
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url() ?>">
-                                        <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
+                                        <svg class="bi" aria-hidden="true"></svg>
                                         Dashboard
                                     </a>
                                 </li>
@@ -59,14 +59,23 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('company_list') ?>">
-                                        <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
+                                        <svg class="bi" aria-hidden="true"></svg>
                                         Company
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('user_list') ?>">
-                                        <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
+                                        <svg class="bi" aria-hidden="true"></svg>
                                         User
+                                    </a>
+                                </li>
+
+                                <hr />
+
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('category_list') ?>">
+                                        <svg class="bi" aria-hidden="true"></svg>
+                                        Category
                                     </a>
                                 </li>
                             </ul>

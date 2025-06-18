@@ -32,3 +32,16 @@ $routes->get('/user_upsert/(:num)', 'User::user_upsert/$1');
 $routes->post('/user_submit', 'User::user_submit');
 $routes->post('/user_del', 'User::user_del');
 /* End User */
+
+
+
+/* Start Category */
+$routes->get('/category_list', 'Category::category_list');
+
+$routes->get('/api/fetchCategoryList', 'Category::fetchCategoryList');
+
+$routes->get('/category_upsert', 'Category::category_upsert');
+$routes->get('/category_upsert/(:num)', 'Category::category_upsert/$1');
+$routes->post('/category_submit', 'Category::category_submit');
+$routes->post('/category_del', 'Category::category_del');
+/* End Category */
