@@ -9,6 +9,8 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Home::dashboard');
 
+$routes->get('uploads/(:any)/(:any)', 'FileController::serve/$1/$2');
+
 /* Start Company */
 $routes->get('/company_list', 'Company::company_list');
 
@@ -45,3 +47,22 @@ $routes->get('/category_upsert/(:num)', 'Category::category_upsert/$1');
 $routes->post('/category_submit', 'Category::category_submit');
 $routes->post('/category_del', 'Category::category_del');
 /* End Category */
+
+
+
+/* Start Product */
+$routes->get('/product_list', 'Product::product_list');
+
+$routes->get('/api/fetchProductList', 'Product::fetchProductList');
+
+$routes->get('/product_upsert', 'Product::product_upsert');
+$routes->get('/product_upsert/(:num)', 'Product::product_upsert/$1');
+$routes->post('/product_submit', 'Product::product_submit');
+$routes->post('/product_del', 'Product::product_del');
+/* End Product */
+
+
+/* Start EC */
+$routes->get('/ec', 'Ec::index');
+
+/* End EC */

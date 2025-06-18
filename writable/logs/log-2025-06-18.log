@@ -38,3 +38,110 @@ CRITICAL - 2025-06-18 10:54:32 --> ErrorException: Maximum execution time of 120
 [Method: POST, Route: category_submit]
 in SYSTEMPATH\Database\MySQLi\Connection.php on line 327.
  1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2025-06-18 16:01:25 --> ParseError: syntax error, unexpected variable "$routes"
+[Method: GET, Route: product_upsert]
+in APPPATH\Config\Routes.php on line 14.
+ 1 SYSTEMPATH\CodeIgniter.php(821): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-18 16:03:38 --> ErrorException: Undefined array key "prod_name"
+[Method: GET, Route: product_upsert/1]
+in APPPATH\Views\product_upsert.php on line 180.
+ 1 APPPATH\Views\product_upsert.php(180): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "prod_name"', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\product_upsert.php', 180)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\product_upsert.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('product_upsert', [], true)
+ 5 APPPATH\Controllers\Product.php(54): view('product_upsert', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Product->product_upsert('1')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-18 16:03:46 --> ErrorException: Undefined array key "prod_name"
+[Method: GET, Route: product_upsert/1]
+in APPPATH\Views\product_upsert.php on line 180.
+ 1 APPPATH\Views\product_upsert.php(180): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "prod_name"', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\product_upsert.php', 180)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\product_upsert.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('product_upsert', [], true)
+ 5 APPPATH\Controllers\Product.php(54): view('product_upsert', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Product->product_upsert('1')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-18 16:09:13 --> ErrorException: Undefined variable $originalName
+[Method: POST, Route: product_submit]
+in APPPATH\Controllers\Product.php on line 105.
+ 1 APPPATH\Controllers\Product.php(105): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $originalName', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Product.php', 105)
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Product->product_submit()
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-18 16:09:48 --> Error: Call to a member function isValid() on null
+[Method: POST, Route: product_submit]
+in APPPATH\Controllers\Product.php on line 96.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Product->product_submit()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-18 16:11:47 --> Error: Call to a member function isValid() on null
+[Method: POST, Route: product_submit]
+in APPPATH\Controllers\Product.php on line 85.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Product->product_submit()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-18 16:38:14 --> ErrorException: Trying to access array offset on value of type null
+[Method: POST, Route: product_submit]
+in APPPATH\Controllers\Product.php on line 131.
+ 1 APPPATH\Controllers\Product.php(131): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Trying to access array offset on value of type null', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Product.php', 131)
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Product->product_submit()
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-06-18 16:46:52 --> mysqli_sql_exception: Table 'ci4crm.customer' doesn't exist in C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `product...', 0)
+#1 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `product...')
+#2 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `product...')
+#3 C:\xampp\htdocs\CRM_CI4\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product...', Array, false)
+#4 C:\xampp\htdocs\CRM_CI4\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CRM_CI4\system\BaseModel.php(679): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CRM_CI4\app\Controllers\Product.php(26): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(933): App\Controllers\Product->fetchProductList()
+#8 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+#9 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CRM_CI4\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CRM_CI4\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CRM_CI4\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+ERROR - 2025-06-18 16:47:15 --> mysqli_sql_exception: Column 'is_deleted' in where clause is ambiguous in C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `product...', 0)
+#1 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `product...')
+#2 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `product...')
+#3 C:\xampp\htdocs\CRM_CI4\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product...', Array, false)
+#4 C:\xampp\htdocs\CRM_CI4\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CRM_CI4\system\BaseModel.php(679): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CRM_CI4\app\Controllers\Product.php(26): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(933): App\Controllers\Product->fetchProductList()
+#8 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Product))
+#9 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CRM_CI4\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CRM_CI4\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CRM_CI4\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}

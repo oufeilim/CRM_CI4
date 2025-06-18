@@ -6,7 +6,7 @@ use App\Models\Category_model;
 use App\Models\Product_model;
 use Exception;
 
-class Category extends BaseController
+class Product extends BaseController
 {
 
     private $data = [];
@@ -17,14 +17,19 @@ class Category extends BaseController
 
     public function fetchProductList() {
         try {
-            $category_model = new Product_model();
-            $productList = $category_model->where(['is_deleted' => 0])->findAll();
+            $product_model = new Product_model();
+            $category_model = new Category_model();
+            $productList = $product_model
+                                ->select('product.*, category.title AS category_title')
+                                ->join('category','category.category_id = product.category_id','left')
+                                ->where(['product.is_deleted' => 0])
+                                ->findAll();
 
             if(!$productList) {
                 return $this->response->setStatusCode(404)->setJSON([
                     'status'    => 'Error', 
                     'message'   => 'No data exist',
-                    'errors'    => $category_model->error()
+                    'errors'    => $product_model->error()
                 ]);
             }
 
@@ -39,42 +44,47 @@ class Category extends BaseController
         }
     }
 
-    public function category_upsert($id=""){
+    public function product_upsert($id=""){
         if($id == "") {
             $this->data['mode'] = "Add";
         } else {
             $this->data['mode'] = "Edit";
             $this->data['id'] = $id;
 
-            $category_model = new Category_model();
-            $categoryData = $category_model->find($id);
-            $this->data['categoryData'] = $categoryData;
+            $product_model = new Product_model();
+            $productData = $product_model->find($id);
+            $this->data['productData'] = $productData;
         }
 
-        return view('header').view('category_upsert', $this->data).view('footer');
+        return view('header').view('product_upsert', $this->data).view('footer');
     }
 
     function slugify(string $title): string {
         return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-'));
     }
 
-    public function category_submit() {
-        $formData = $this->request->getJSON();
+    public function product_submit() {
+        
+            $mode           = $this->request->getPost('mode');
+            $id             = $this->request->getPost('id');
 
-        try {
-            $mode           = $formData->mode;
-            $id             = $formData->id;
+            $name           = $this->request->getPost('prod_name');
+            $slug           = $this->slugify($name);
+            $category_id    = $this->request->getPost('category_id');
+            $price          = $this->request->getPost('price');
+            $stock_qty      = $this->request->getPost('stock_qty');
+            $is_display     = $this->request->getPost('is_display');
+            $priority       = $this->request->getPost('priority');
+            $description    = $this->request->getPost('description');
 
-            $title          = $formData->title;
-            $description    = $formData->description;
-            $priority       = $formData->priority;
+            // image
+            $image          = $this->request->getFile('image');
+            $image_path     = '';
 
-            $slug           = $this->slugify($title);
-
-            $category_model = new Category_model();
+            $product_model = new Product_model();
 
             // check duplicate slug
-            $existing = $category_model->select(['slug'])->where(['slug' => $slug])->first();
+            $existing = $product_model->select(['slug'])->where(['slug' => $slug])->first();
 
             if($mode == "Add") {
 
@@ -82,15 +92,30 @@ class Category extends BaseController
                     $count = 2;
                     $baseSlug = $slug;
 
-                    while($category_model->where(['slug'=> $slug])->first()) {
+                    while($product_model->where(['slug'=> $slug])->first()) {
                         $slug = $baseSlug . '-' . $count++;
                     }
                 }
 
-                $inserted = $category_model->insert([
-                    'title'         => $title,
+                // Modify image properties inside condition for image name
+                if($image && $image->isValid() && !$image->hasMoved()) {
+                    $originalName = $image->getClientName();
+                    $extension = $image->getClientExtension();
+
+                    $imageName = $slug . '_' . date('YmdHis') . '.' . $extension;
+                    $image->move(WRITEPATH . 'uploads/product/', $imageName);
+                    $image_path = 'uploads/product/' . $imageName;
+                }
+
+                $inserted = $product_model->insert([
+                    'name'          => $name,
                     'slug'          => $slug,
+                    'category_id'   => $category_id,
                     'description'   => $description,
+                    'price'         => $price,
+                    'stock_qty'     => $stock_qty,
+                    'image_url'     => $image_path,
+                    'is_display'    => $is_display,
                     'priority'      => $priority,
                     'created_date'  => date('Y-m-d H:i:s')
                 ]);
@@ -99,38 +124,59 @@ class Category extends BaseController
                     return $this->response->setStatusCode(400)->setJSON([
                         'status'    => 'Error',
                         'message'   => 'Failed to insert data into database.',
-                        'errors'    => $category_model->error(),
+                        'errors'    => $product_model->error(),
                     ]);
                 }
 
             } else {
 
-                $nochanged = $category_model->select(['slug'])->where(['category_id' => $id])->first();
+                $nochanged = $product_model->select(['slug'])->where(['product_id' => $id])->first();
 
                 // Only do when the value existed and the ori value isn't the same as modified value
                 if($existing && ($existing['slug'] != $nochanged['slug'])) {
                     $count = 1;
                     $baseSlug = $slug;
 
-                    while($category_model->where(['slug'=> $slug])->first()) {
+                    while($product_model->where(['slug'=> $slug])->first()) {
                         $slug = $baseSlug . '-' . $count++;
                     }
                 }
 
+                $oriImage = $product_model->select(['image_url'])->where(['product_id'=> $id])->first();
+
+                if($image) {
+                    // Modify image properties inside condition for image name
+                    if($image->isValid() && !$image->hasMoved()) {
+                        $originalName = $image->getClientName();
+                        $extension = $image->getClientExtension();
+
+                        $imageName = $slug . '_' . date('YmdHis') . '.' . $extension;
+                        $image->move(WRITEPATH . 'uploads/product/', $imageName);
+                        $image_path = 'uploads/product/' . $imageName;
+                    }
+                } else {
+                    $image_path = $oriImage;
+                }
+
                 // Update User_table
-                $modified = $category_model->update($id, [
-                    'title'          => $title,
-                    'slug'           => $slug,
-                    'description'    => $description,
-                    'priority'       => $priority,
-                    'modified_date'  => date('Y-m-d H:i:s')
+                $modified = $product_model->update($id, [
+                    'name'          => $name,
+                    'slug'          => $slug,
+                    'category_id'   => $category_id,
+                    'description'   => $description,
+                    'price'         => $price,
+                    'stock_qty'     => $stock_qty,
+                    'image_url'     => $image_path,
+                    'is_display'    => $is_display,
+                    'priority'      => $priority,
+                    'created_date'  => date('Y-m-d H:i:s')
                 ]);
 
                 if(!$modified) {
                     return $this->response->setStatusCode(400)->setJSON([
                         'status'    => 'Error',
                         'message'   => 'Failed to update data into database.',
-                        'errors'    => $category_model->error(),
+                        'errors'    => $product_model->error(),
                     ]);
                 }
             }
@@ -140,24 +186,18 @@ class Category extends BaseController
                 'message'   => 'Operation success.',
             ]);
 
-        } catch (Exception $e) {
-            return $this->response->setStatusCode(500)->setJSON([
-                'status'    => 'Error',
-                'message'   => 'Server error occurred',
-                'errors'    => $e->getMessage(),
-            ]);
-        }
+        
     }
 
-    public function category_del() {
+    public function product_del() {
         $targetID = $this->request->getJSON();
 
         try {
 
             $id = $targetID->id;
-            $category_model = new Category_model();
+            $product_model = new Product_model();
 
-            $deleted = $category_model->update($id, [
+            $deleted = $product_model->update($id, [
                 'is_deleted' => 1,
                 'modified_date' => date('Y-m-d H:i:s'),
             ]);
@@ -166,7 +206,7 @@ class Category extends BaseController
                 return $this->response->setStatusCode(400)->setJSON([
                     'status'    => 'Error',
                     'message'   => 'Failed to delete data from database.',
-                    'errors'    => $category_model->error(),
+                    'errors'    => $product_model->error(),
                 ]);
             }
 

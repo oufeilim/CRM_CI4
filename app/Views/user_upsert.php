@@ -58,7 +58,7 @@
         // get company list
         $http.get('<?= base_url('api/fetchCompanyList') ?>')
         .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             $scope.companyList = res.data;
         })
         .catch((err) => {
@@ -76,7 +76,7 @@
                 // Not selected, add it
                 $scope.selectedCompanyList.push(id);
             }
-            console.log($scope.selectedCompanyList);
+            // console.log($scope.selectedCompanyList);
         }
 
         // Check if checked, push the value into array
