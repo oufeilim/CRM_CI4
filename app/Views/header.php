@@ -54,6 +54,21 @@
                                         Dashboard
                                     </a>
                                 </li>
+
+                                <hr />
+
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('company_list') ?>">
+                                        <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
+                                        Company
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('user_list') ?>">
+                                        <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
+                                        User
+                                    </a>
+                                </li>
                             </ul>
                             <!-- <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
                                 <span>Saved reports</span>

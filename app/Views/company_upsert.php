@@ -108,7 +108,7 @@
                         .then((res) => {
                             if(res.data.status == "Success") {
                                 alert('Done');
-                                $window.location.href = '<?= base_url() ?>'
+                                $window.location.href = '<?= base_url('company_list') ?>'
                             }
                         })
                         .catch((err) => {

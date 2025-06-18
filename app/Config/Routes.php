@@ -6,23 +6,29 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
+
 $routes->get('/', 'Home::dashboard');
 
-// Company
-$routes->get('/api/fetchCompanyList', 'Home::fetchCompanyList');
+/* Start Company */
+$routes->get('/company_list', 'Company::company_list');
 
-$routes->get('/company_upsert', 'Home::company_upsert');
-$routes->get('/company_upsert/(:num)', 'Home::company_upsert/$1');
+$routes->get('/api/fetchCompanyList', 'Company::fetchCompanyList');
 
-$routes->post('/company_submit', 'Home::company_submit');
-$routes->post('/company_del', 'Home::company_del');
+$routes->get('/company_upsert', 'Company::company_upsert');
+$routes->get('/company_upsert/(:num)', 'Company::company_upsert/$1');
+$routes->post('/company_submit', 'Company::company_submit');
+$routes->post('/company_del', 'Company::company_del');
+/* End Company */
 
 
-// User
-$routes->get('/api/fetchUserList', 'Home::fetchUserList');
 
-$routes->get('/user_upsert', 'Home::user_upsert');
-$routes->get('/user_upsert/(:num)', 'Home::user_upsert/$1');
+/* Start User */
+$routes->get('/user_list', 'User::user_list');
 
-$routes->post('/user_submit', 'Home::user_submit');
-$routes->post('/user_del', 'Home::user_del');
+$routes->get('/api/fetchUserList', 'User::fetchUserList');
+
+$routes->get('/user_upsert', 'User::user_upsert');
+$routes->get('/user_upsert/(:num)', 'User::user_upsert/$1');
+$routes->post('/user_submit', 'User::user_submit');
+$routes->post('/user_del', 'User::user_del');
+/* End User */
