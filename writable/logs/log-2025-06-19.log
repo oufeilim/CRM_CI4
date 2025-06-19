@@ -1,0 +1,223 @@
+CRITICAL - 2025-06-19 08:44:51 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "ec/category_product_list.php"
+[Method: GET, Route: ec/category_product_list/2/fruits]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(212): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('ec/category_product_list.php')
+ 2 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('ec/category_product_list', [], true)
+ 3 APPPATH\Controllers\Ec.php(52): view('ec/category_product_list')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:12:11 --> Error: Class "APP\Models\Product_model" not found
+[Method: GET, Route: ec/category_product_list/2/fruits]
+in APPPATH\Controllers\Ec.php on line 53.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:16:31 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ product.image_url }}"
+[Method: GET, Route: %7B%7B%20product.image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ product.image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ product.image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:16:46 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ product.image_url }}"
+[Method: GET, Route: %7B%7B%20product.image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ product.image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ product.image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:16:55 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ product.image_url }}"
+[Method: GET, Route: %7B%7B%20product.image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ product.image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ product.image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:17:09 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ product.image_url }}"
+[Method: GET, Route: %7B%7B%20product.image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ product.image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ product.image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:18:08 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ product.image_url }}"
+[Method: GET, Route: %7B%7B%20product.image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ product.image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ product.image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-06-19 09:24:36 --> mysqli_sql_exception: Unknown column 'prduct.is_display' in 'where clause' in C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `product...', 0)
+#1 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `product...')
+#2 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `product...')
+#3 C:\xampp\htdocs\CRM_CI4\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product...', Array, false)
+#4 C:\xampp\htdocs\CRM_CI4\system\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CRM_CI4\system\BaseModel.php(679): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\CRM_CI4\app\Controllers\Ec.php(64): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+#8 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+#9 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CRM_CI4\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CRM_CI4\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CRM_CI4\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2025-06-19 09:24:36 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'prduct.is_display' in 'where clause'
+[Method: GET, Route: ec/category_product_list/2/fruits]
+in SYSTEMPATH\Database\BaseConnection.php on line 692.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = :category.category_id:
+AND `category`.`slug` = :category.slug:
+AND `prduct`.`is_display` = :prduct.is_display:
+AND `product`.`is_deleted` = :product.is_deleted:
+ORDER BY `product`.`priority` ASC', [...], false)
+ 2 SYSTEMPATH\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(679): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Controllers\Ec.php(64): CodeIgniter\BaseModel->findAll()
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:24:36 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'prduct.is_display' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 332.
+ 1 SYSTEMPATH\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = \'2\'
+AND `category`.`slug` = \'fruits\'
+AND `prduct`.`is_display` = 1
+AND `product`.`is_deleted` = 0
+ORDER BY `product`.`priority` ASC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = \'2\'
+AND `category`.`slug` = \'fruits\'
+AND `prduct`.`is_display` = 1
+AND `product`.`is_deleted` = 0
+ORDER BY `product`.`priority` ASC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = :category.category_id:
+AND `category`.`slug` = :category.slug:
+AND `prduct`.`is_display` = :prduct.is_display:
+AND `product`.`is_deleted` = :product.is_deleted:
+ORDER BY `product`.`priority` ASC', [...], false)
+ 4 SYSTEMPATH\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(679): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Ec.php(64): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+ 8 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+ 9 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:24:36 --> [Caused by] mysqli_sql_exception: Unknown column 'prduct.is_display' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 327.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = \'2\'
+AND `category`.`slug` = \'fruits\'
+AND `prduct`.`is_display` = 1
+AND `product`.`is_deleted` = 0
+ORDER BY `product`.`priority` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = \'2\'
+AND `category`.`slug` = \'fruits\'
+AND `prduct`.`is_display` = 1
+AND `product`.`is_deleted` = 0
+ORDER BY `product`.`priority` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = \'2\'
+AND `category`.`slug` = \'fruits\'
+AND `prduct`.`is_display` = 1
+AND `product`.`is_deleted` = 0
+ORDER BY `product`.`priority` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product`.*, `category`.`category_id`, `category`.`slug`
+FROM `product`
+LEFT JOIN `category` ON `category`.`category_id` = `product`.`category_id`
+WHERE `category`.`category_id` = :category.category_id:
+AND `category`.`slug` = :category.slug:
+AND `prduct`.`is_display` = :prduct.is_display:
+AND `product`.`is_deleted` = :product.is_deleted:
+ORDER BY `product`.`priority` ASC', [...], false)
+ 5 SYSTEMPATH\Model.php(286): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(679): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Controllers\Ec.php(64): CodeIgniter\BaseModel->findAll()
+ 8 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+ 9 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+10 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 09:38:28 --> ErrorException: Undefined variable $productList
+[Method: GET, Route: ec/category_product_list/2/fruits]
+in APPPATH\Controllers\Ec.php on line 55.
+ 1 APPPATH\Controllers\Ec.php(55): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $productList', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Ec.php', 55)
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Ec->category_product_list('2', 'fruits')
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-19 10:27:00 --> ParseError: Unclosed '{' on line 10
+[Method: GET, Route: ec/product_detail/3/banana]
+in APPPATH\Controllers\Ec.php on line 122.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(295): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Ec.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(271): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Ec')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Ec')
+ 4 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Ec', true)
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-06-19 10:48:50 --> mysqli_sql_exception: Unknown column 'category.id' in 'field list' in C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\CRM_CI4\system\Database\MySQLi\Connection.php(327): mysqli->query('SELECT `product...', 0)
+#1 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(738): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `product...')
+#2 C:\xampp\htdocs\CRM_CI4\system\Database\BaseConnection.php(652): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `product...')
+#3 C:\xampp\htdocs\CRM_CI4\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `product...', Array, false)
+#4 C:\xampp\htdocs\CRM_CI4\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\CRM_CI4\system\BaseModel.php(717): CodeIgniter\Model->doFirst()
+#6 C:\xampp\htdocs\CRM_CI4\app\Controllers\Ec.php(105): CodeIgniter\BaseModel->first()
+#7 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(933): App\Controllers\Ec->getProductDetail('2', 'orange')
+#8 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Ec))
+#9 C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\CRM_CI4\system\Boot.php(334): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\CRM_CI4\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\CRM_CI4\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}

@@ -22,5 +22,16 @@ class Product_model extends Model {
         'priority',
         'modified_date'
     ];
+
+    public function getOne($id) {
+        return $this->find($id);
+    }
+
+    public function getAllProductList() {
+        return $this->select('product.*, category.title AS category_title')
+                    ->join('category','category.category_id = product.category_id','left')
+                    ->where(['product.is_deleted' => 0])
+                    ->findAll();
+    }
 }
 ?>

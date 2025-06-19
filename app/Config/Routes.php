@@ -64,5 +64,14 @@ $routes->post('/product_del', 'Product::product_del');
 
 /* Start EC */
 $routes->get('/ec', 'Ec::index');
+$routes->get('/ec/category', 'Ec::category');
+
+$routes->get('/api/ec/fetchCategoryList', 'Ec::fetchCategoryList');
+
+$routes->get('/ec/category_product_list/(:num)/(:any)', 'Ec::category_product_list/$1/$2');
+$routes->get('/api/ec/getCategoryProductList/(:num)/(:any)', 'Ec::getCategoryProductList/$1/$2');
+
+$routes->get('/ec/product_detail/(:num)/(:any)', 'Ec::product_detail/$1/$2');
+$routes->get('/api/ec/getProductDetail/(:num)/(:any)', 'Ec::getProductDetail/$1/$2');
 
 /* End EC */

@@ -19,11 +19,7 @@ class Product extends BaseController
         try {
             $product_model = new Product_model();
             $category_model = new Category_model();
-            $productList = $product_model
-                                ->select('product.*, category.title AS category_title')
-                                ->join('category','category.category_id = product.category_id','left')
-                                ->where(['product.is_deleted' => 0])
-                                ->findAll();
+            $productList = $product_model->getAllProductList();
 
             if(!$productList) {
                 return $this->response->setStatusCode(404)->setJSON([
@@ -52,7 +48,7 @@ class Product extends BaseController
             $this->data['id'] = $id;
 
             $product_model = new Product_model();
-            $productData = $product_model->find($id);
+            $productData = $product_model->getOne($id);
             $this->data['productData'] = $productData;
         }
 
