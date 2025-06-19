@@ -23,6 +23,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Phone Number</th>
+                                    <th scope="col">Address</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -32,6 +33,7 @@
                                     <td>{{ x.name }}</td>
                                     <td>{{ x.email }}</td>
                                     <td>{{ x.phonenum }}</td>
+                                    <td>{{ x.address }}</td>
                                     <td>
                                         <div class="btn-toolbar mb-2 mb-md-0">
                                             <div class="btn-group me-2">

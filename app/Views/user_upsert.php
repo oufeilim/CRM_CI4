@@ -30,6 +30,14 @@
                 <div ng-message="required">Phone number is required.</div>
             </div>
         </div>
+        
+        <div class="form-group my-2">
+            <label class="form-label" for="user_addr">Address</label>
+            <input ng-model="user_addr" name="user_addr" id="user_addr" type="text" class="form-control" required>
+            <div ng-messages="userForm.user_addr.$error" ng-if="submitted" class="text-danger">
+                <div ng-message="required">Address is required.</div>
+            </div>
+        </div>
 
         <hr />
 
@@ -92,6 +100,7 @@
         $scope.user_name        = '<?= esc(isset($userData) ? $userData['name'] : '') ?>';
         $scope.user_email       = '<?= esc(isset($userData) ? $userData['email'] : '') ?>';
         $scope.user_phonenum    = '<?= esc(isset($userData) ? $userData['phonenum'] : '') ?>';
+        $scope.user_addr        = '<?= esc(isset($userData) ? $userData['address'] : '') ?>';
 
         $scope.submitForm = function () {
             if(confirm("Are you sure?")) {
@@ -105,7 +114,8 @@
                         'name'            : $scope.user_name,
                         'email'           : $scope.user_email,
                         'phonenum'        : $scope.user_phonenum,
-                        'company_user'    : $scope.selectedCompanyList
+                        'address'         : $scope.user_addr,
+                        'company_user'    : $scope.selectedCompanyList,
                     };
 
                     $http.post('<?= base_url('user_submit') ?>', postData)

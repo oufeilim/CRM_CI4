@@ -14,6 +14,7 @@ class User_model extends Model {
         'name',
         'email',
         'phonenum',
+        'address',
         'modified_date'
     ];
 }

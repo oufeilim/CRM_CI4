@@ -77,6 +77,7 @@ class User extends BaseController
             $name           = $formData->name;
             $email          = $formData->email;
             $phonenum       = $formData->phonenum;
+            $address        = $formData->address;
 
             $cu             = $formData->company_user;
 
@@ -91,6 +92,7 @@ class User extends BaseController
                     'name'          => $name,
                     'email'         => $email,
                     'phonenum'      => $phonenum,
+                    'address'       => $address,
                     'created_date'  => date('Y-m-d H:i:s')
                 ]);
 
@@ -148,6 +150,7 @@ class User extends BaseController
                     'name'          => $name,
                     'email'         => $email,
                     'phonenum'      => $phonenum,
+                    'address'       => $address,
                     'modified_date'  => date('Y-m-d H:i:s')
                 ]);
 
