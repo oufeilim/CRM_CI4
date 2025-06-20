@@ -1,0 +1,392 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\Sales_order_model;
+use App\Models\Sales_order_detail_model;
+
+use Exception;
+
+class Sales_order extends BaseController
+{
+    private $data = [];
+
+    public function sales_order_list()
+    {
+        return view('header').view('sales_order_list').view('footer');
+    }
+
+    public function fetchSalesOrderList()
+    {
+        try {
+            $sales_order_model = new Sales_order_model();
+            $salesOrderList = $sales_order_model
+                                    ->select('sales_order_id, serial_number, order_date, order_status, user_name, final_amount, payment_status')
+                                    ->where(['is_deleted' => 0])
+                                    ->findAll();
+
+            if(!$salesOrderList) {
+                return $this->response->setStatusCode(404)->setJSON([
+                    'status'    => 'Error', 
+                    'message'   => 'No data exist',
+                    'errors'    => $sales_order_model->error()
+                ]);
+            }
+
+            return $this->response->setStatusCode(200)->setJSON($salesOrderList);
+
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Server error occurred',
+                'errors'    => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function sales_order_upsert($id = "")
+    {
+        if($id == "") {
+            $this->data['mode'] = "Add";
+        } else {
+            $this->data['mode'] = "Edit";
+            $this->data['id'] = $id;
+
+            $sales_order_model = new Sales_order_model();
+            $sales_order_detail_model = new Sales_order_detail_model();
+
+            $sales_order = $sales_order_model->where([
+                'sales_order_id' => $id,
+                'is_deleted' => 0,
+            ])->first();
+            
+            if($sales_order) {
+                $sales_order_detail = $sales_order_detail_model->where([
+                    'sales_order_id' => $id,
+                    'is_deleted' => 0,
+                ])->findAll();
+
+                $this->data['salesOrderData'] = $sales_order;
+                $this->data['salesOrderDetailData'] = $sales_order_detail;
+            }
+        }
+
+        return view('header').view('sales_order_upsert', $this->data).view('footer');
+    }
+
+    public function sales_order_submit() {
+        $formData = $this->request->getJSON();
+
+        try {
+            
+            // sales order
+            $mode               = $formData->mode;
+            $id                 = $formData->id;
+            $serial_number      = $formData->serial_number;
+            $order_date         = $formData->order_date;
+            $total_amount       = $formData->total_amount;
+            $discount_amount    = $formData->discount_amount;
+            $final_amount       = $formData->final_amount;
+            $user_id            = $formData->user_id;
+            $user_name          = $formData->user_name;
+            $user_email         = $formData->user_email;
+            $user_contact       = $formData->user_contact;
+            $user_address       = $formData->user_address;
+            $order_status       = $formData->order_status;
+            $payment_status     = $formData->payment_status;
+            $payment_date       = $formData->payment_date;
+            $payment_method     = $formData->payment_method;
+            $admin_remark       = $formData->admin_remark;
+        
+            $sales_order_detail = $formData->sales_order_detail;
+
+            if($mode == "Add") {
+                // Insert sales order to get sales_order_id
+                $sales_order_model = new Sales_order_model();
+
+                // generate a serial_number
+                $serial_num = 'SN-' . date('Ymd-His') . '-' . uniqid() . '-' . bin2hex(random_bytes(2));
+
+                $sales_order_id = $sales_order_model->insert([
+                    'created_date'      => date('Y-m-d H:i:s'),
+                    'serial_number'     => $serial_num,
+                    'order_date'        => $order_date,
+                    'total_amount'      => number_format($total_amount, 2, '.' , ''),
+                    'discount_amount'   => number_format($discount_amount, 2, '.' , ''),
+                    'final_amount'      => number_format($final_amount, 2, '.' , ''),
+                    'order_status'      => $order_status,
+                    'user_id'           => $user_id,
+                    'user_name'         => $user_name,
+                    'user_email'        => $user_email,
+                    'user_address'      => $user_address,
+                    'user_contact'      => $user_contact,
+                    'payment_status'    => $payment_status,
+                    'payment_date'      => $payment_date,
+                    'payment_method'    => $payment_method,
+                    'admin_remark'      => $admin_remark
+                ]);
+
+                if(!$sales_order_id) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Failed to insert data into database.',
+                        'errors'    => $sales_order_model->errors()
+                    ]);
+                }
+
+                // Sales order detail
+                // associative arrays
+                $sales_order_detail_model = new Sales_order_detail_model();
+                $sales_order_detail_array = [];
+
+                foreach($sales_order_detail as $product_item) {
+                    $sales_order_detail_array[] = [
+                        'created_date'      => date('Y-m-d H:i:s'),
+                        'sales_order_id'    => $sales_order_id,
+                        'product_id'        => $product_item->product_id,
+                        'unit_price'        => number_format($product_item->product_price, 2, '.' , ''),
+                        'qty'               => $product_item->product_qty,
+                        'total_amount'      => number_format($product_item->total, 2, '.' , ''),
+                        'product_name'      => $product_item->product_name,
+                        'product_image_url' => $product_item->product_image_url
+                    ];
+                }
+
+                $inserted = $sales_order_detail_model->insertBatch($sales_order_detail_array);
+
+                if(!$inserted) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Failed to insert data into database.',
+                        'errors'    => $sales_order_detail_model->errors()
+                    ]);
+                }
+
+                return $this->response->setStatusCode(200)->setJSON([
+                    'status'    => 'Success',
+                    'message'   => 'Data inserted.',
+                ]);
+            } else {
+                $sales_order_model        = new Sales_order_model();
+                $sales_order_detail_model = new Sales_order_detail_model();
+                $builder                  = $sales_order_detail_model->builder();
+
+                $sales_order = $sales_order_model->update($id, [
+                    'modified_date'      => date('Y-m-d H:i:s'),
+                    'serial_number'     => $serial_number,
+                    'order_date'        => $order_date,
+                    'total_amount'      => number_format($total_amount, 2, '.' , ''),
+                    'discount_amount'   => number_format($discount_amount, 2, '.' , ''),
+                    'final_amount'      => number_format($final_amount, 2, '.' , ''),
+                    'order_status'      => $order_status,
+                    'user_id'           => $user_id,
+                    'user_name'         => $user_name,
+                    'user_email'        => $user_email,
+                    'user_address'      => $user_address,
+                    'user_contact'      => $user_contact,
+                    'payment_status'    => $payment_status,
+                    'payment_date'      => $payment_date,
+                    'payment_method'    => $payment_method,
+                    'admin_remark'      => $admin_remark
+                ]);
+
+                if(!$sales_order) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Failed to update data into database.',
+                        'errors'    => $sales_order_model->errors()
+                    ]);
+                }
+                
+                // sales order detail update
+            
+                $incoming = [];
+                foreach ($sales_order_detail as $item) {
+                    $incoming[$item->product_id] = $item;
+                }
+                $incoming_ids = array_keys($incoming);
+
+                $existing = $sales_order_detail_model
+                                ->where('sales_order_id', $id)
+                                ->findAll();
+
+                // init (active = <isdeleted = 0>, inactive = <isdeleted = 1>)
+                $active   = [];
+                $inactive = [];
+
+                // categorize
+                foreach ($existing as $row) {
+                    if ($row['is_deleted']) {
+                        $inactive[$row['product_id']] = $row;
+                    } else {
+                        $active[$row['product_id']] = $row;
+                    }
+                }
+
+                // get keys for compare
+                $active_ids   = array_keys($active);
+                $inactive_ids = array_keys($inactive);
+
+                // compare with keys
+                $toDelete     = array_diff($active_ids, $incoming_ids);
+                $toReactivate = array_intersect($inactive_ids, $incoming_ids);
+                $toInsert     = array_diff($incoming_ids, $active_ids, $inactive_ids);
+                $toMaybeUpd   = array_intersect($active_ids, $incoming_ids);
+
+                // Soft-delete
+                if ($toDelete) {
+                    $builder->where('sales_order_id', $id)
+                            ->whereIn('product_id', $toDelete)
+                            ->set(['is_deleted' => 1, 'modified_date' => date('Y-m-d H:i:s')])
+                            ->update();
+
+                    $error = $sales_order_detail_model->error();
+                    if ($error['code'] !== 0) {
+                        return $this->response->setStatusCode(500)->setJSON([
+                            'status' => 'Error',
+                            'message' => 'Failed to update sales order detail (toDelete).',
+                            'errors' => $error
+                        ]);
+                    }
+                }
+
+                // Re-activate existed data and update it
+                if ($toReactivate) {
+                    foreach ($toReactivate as $pid) {
+                        $item = $incoming[$pid];
+                        $builder->where('sales_order_id', $id)
+                                ->where('product_id', $pid)
+                                ->set([
+                                    'unit_price'      => number_format($item->product_price, 2, '.', ''),
+                                    'qty'             => $item->product_qty,
+                                    'total_amount'    => number_format($item->total, 2, '.', ''),
+                                    'product_name'    => $item->product_name,
+                                    'product_image_url'   => $item->product_image_url,
+                                    'is_deleted'      => 0,
+                                    'modified_date'   => date('Y-m-d H:i:s')
+                                ])
+                                ->update();
+
+                        $error = $sales_order_detail_model->error();
+                        if ($error['code'] !== 0) {
+                            return $this->response->setStatusCode(500)->setJSON([
+                                'status' => 'Error',
+                                'message' => 'Failed to update sales order detail (toReactivate).',
+                                'errors' => $error
+                            ]);
+                        }
+                    }
+                }
+
+                // Actived, new value update
+                foreach ($toMaybeUpd as $pid) {
+                    $item = $incoming[$pid];
+                    $existing_row = $active[$pid];
+
+                    $new_price = number_format($item->product_price, 2, '.', '');
+                    $old_price = number_format($existing_row['unit_price'], 2, '.', '');
+
+                    $new_qty = (int)$item->product_qty;
+                    $old_qty = (int)$existing_row['qty'];
+
+                    if ($new_price !== $old_price || $new_qty !== $old_qty) {
+                        $builder->where('sales_order_id', $id)
+                                ->where('product_id', $pid)
+                                ->set([
+                                    'unit_price'     => $new_price,
+                                    'qty'            => $new_qty,
+                                    'total_amount'   => number_format($item->total, 2, '.', ''),
+                                    'product_name'   => $item->product_name,
+                                    'product_image_url'  => $item->product_image_url,
+                                    'modified_date'  => date('Y-m-d H:i:s')
+                                ])
+                                ->update();
+                        
+                        $error = $sales_order_detail_model->error();
+                        if ($error['code'] !== 0) {
+                            return $this->response->setStatusCode(500)->setJSON([
+                                'status' => 'Error',
+                                'message' => 'Failed to update sales order detail (toMaybeUpd).',
+                                'errors' => $error
+                            ]);
+                        }
+                    }
+                }
+
+                // If got new items added, insert
+                if ($toInsert) {
+                    $rows = [];
+                    foreach ($toInsert as $pid) {
+                        $item = $incoming[$pid];
+                        $rows[] = [
+                            'sales_order_id'  => $id,
+                            'product_id'      => $pid,
+                            'unit_price'      => number_format($item->product_price, 2, '.', ''),
+                            'qty'             => $item->product_qty,
+                            'total_amount'    => number_format($item->total, 2, '.', ''),
+                            'product_name'    => $item->product_name,
+                            'product_image_url'   => $item->product_image_url,
+                            'created_date'    => date('Y-m-d H:i:s'),
+                        ];
+                    }
+                    $sales_order_detail_model->insertBatch($rows);
+
+                    $error = $sales_order_detail_model->error();
+                    if ($error['code'] !== 0) {
+                        return $this->response->setStatusCode(500)->setJSON([
+                            'status' => 'Error',
+                            'message' => 'Failed to update sales order detail (toInsert).',
+                            'errors' => $error
+                        ]);
+                    }
+                }
+
+                return $this->response->setStatusCode(200)->setJSON([
+                    'status' => 'Success',
+                    'message'=> 'Done.',
+                ]);
+            }            
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Server error occurred',
+                'errors'    => $e->getMessage(),
+            ]);
+        }
+
+    }
+
+    public function sales_order_del() {
+        $targetID = $this->request->getJSON();
+
+        try {
+            
+            $sales_order_model = new Sales_order_model();
+
+            $deleted = $sales_order_model->update($targetID, [
+                'is_deleted' => 1,
+                'modified_date' => date('Y-m-d H:i:s'),
+            ]);
+
+            if(!$deleted) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'status'    => 'Error',
+                    'message'   => 'Failed to delete data from database.',
+                    'errors'    => $sales_order_model->error(),
+                ]);
+            }
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'status'    => 'Success',
+                'message'   => 'Operation success.',
+            ]);
+
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Server error occurred',
+                'errors'    => $e->getMessage(),
+            ]);
+        }
+    }
+}

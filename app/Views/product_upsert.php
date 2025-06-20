@@ -149,6 +149,7 @@
         $http.get('<?= base_url('api/fetchCategoryList') ?>')
             .then((res) => {
                 $scope.categoryList = res.data;
+                $scope.prod_category    = '<?= esc(isset($productData) ? $productData['category_id'] : '') ?>';
             })
             .catch((err) => {
                 alert('Error retrive company. See console for details.');
@@ -186,7 +187,7 @@
         $scope.mode             = '<?= $mode ?>';
         $scope.id               = '<?= isset($id) ? $id : ''?>';
         $scope.prod_name        = '<?= esc(isset($productData) ? $productData['name'] : '') ?>';
-        $scope.prod_category    = '<?= esc(isset($productData) ? $productData['category_id'] : '') ?>';
+        
         $scope.price            = '<?= esc(isset($productData) ? $productData['price'] : '') ?>';
         $scope.stock_qty        = '<?= esc(isset($productData) ? $productData['stock_qty'] : '') ?>';
 

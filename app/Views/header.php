@@ -24,6 +24,10 @@
                 margin-top: 0.25rem;
             }
       </style>
+        <!-- Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <!-- Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-messages.min.js"></script>
         <script>
@@ -82,6 +86,15 @@
                                     <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('product_list') ?>">
                                         <svg class="bi" aria-hidden="true"></svg>
                                         Product
+                                    </a>
+                                </li>
+
+                                <hr />
+
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('sales_order_list') ?>">
+                                        <svg class="bi" aria-hidden="true"></svg>
+                                        Sales Order
                                     </a>
                                 </li>
                             </ul>

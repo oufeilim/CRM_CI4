@@ -62,6 +62,19 @@ $routes->post('/product_del', 'Product::product_del');
 /* End Product */
 
 
+
+/* Start Sales Order */
+$routes->get('/sales_order_list', 'Sales_order::sales_order_list');
+
+$routes->get('/api/fetchSalesOrderList', 'Sales_order::fetchSalesOrderList');
+
+$routes->get('/sales_order_upsert', 'Sales_order::sales_order_upsert');
+$routes->get('/sales_order_upsert/(:num)', 'Sales_order::sales_order_upsert/$1');
+$routes->post('/sales_order_submit', 'Sales_order::sales_order_submit');
+$routes->post('/sales_order_del', 'Sales_order::sales_order_del');
+/* End Sales Order */
+
+
 /* Start EC */
 $routes->get('/ec', 'Ec::index');
 $routes->get('/ec/category', 'Ec::category');
@@ -73,5 +86,4 @@ $routes->get('/api/ec/getCategoryProductList/(:num)/(:any)', 'Ec::getCategoryPro
 
 $routes->get('/ec/product_detail/(:num)/(:any)', 'Ec::product_detail/$1/$2');
 $routes->get('/api/ec/getProductDetail/(:num)/(:any)', 'Ec::getProductDetail/$1/$2');
-
 /* End EC */

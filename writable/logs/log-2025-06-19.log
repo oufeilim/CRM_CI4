@@ -221,3 +221,17 @@ Stack trace:
 #11 C:\xampp\htdocs\CRM_CI4\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 #12 C:\xampp\htdocs\CRM_CI4\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 #13 {main}
+CRITICAL - 2025-06-19 14:13:13 --> ErrorException: Undefined variable $mode
+[Method: GET, Route: sales_order_upsert]
+in APPPATH\Views\sales_order_upsert.php on line 3.
+ 1 APPPATH\Views\sales_order_upsert.php(3): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $mode', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\sales_order_upsert.php', 3)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\sales_order_upsert.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('sales_order_upsert', [], true)
+ 5 APPPATH\Controllers\Sales_order.php(27): view('sales_order_upsert')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->sales_order_upsert()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

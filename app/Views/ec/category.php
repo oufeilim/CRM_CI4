@@ -43,7 +43,6 @@
                 $http.get('<?= base_url('api/ec/fetchCategoryList') ?>')
                 .then((res) => {
                     $scope.categoryList = res.data;
-                    console.log($scope.categoryList);
                 })
                 .catch((err) => {
                     alert('Error retriveing data. See console for details.');
