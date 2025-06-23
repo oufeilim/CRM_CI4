@@ -29,10 +29,17 @@
                             <p>{{ productData.description }}</p>
                             <p><strong>Price:</strong> {{ productData.price }} each</p>
                             <p><strong>Stock Available:</strong> {{ productData.stock_qty }}</p>
-                            <!-- <div class="d-flex gap-2 mt-3">
-                                <button class="btn btn-primary">Buy Now</button>
-                                <button class="btn btn-outline-secondary">Add to Cart</button>
-                            </div> -->
+                            <div class="d-flex flex-column gap-2 mt-3" style="max-width: 200px;">
+                                <!-- Quantity Selector -->
+                                <div class="input-group">
+                                    <button class="btn btn-outline-secondary" type="button" ng-click="decreaseQty()">−</button>
+                                    <input type="number" class="form-control text-center" ng-model="quantity" min="1" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" ng-click="increaseQty()">+</button>
+                                </div>
+
+                                <!-- Add to Cart Button -->
+                                <button class="btn btn-primary" ng-click="addToCart()">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,7 +47,21 @@
         </main>
 
         <script>
-            angular.module('myApp').controller('ProductDetailView', function($scope, $http, $window) {
+            angular.module('myApp').controller('ProductDetailView', function($scope, $rootScope, $http, $window, cartService) {
+
+                $scope.quantity = 1;
+
+                $scope.increaseQty = function () {
+                    if ($scope.quantity < $scope.productData.stock_qty) {
+                        $scope.quantity++;
+                    }
+                };
+
+                $scope.decreaseQty = function () {
+                    if ($scope.quantity > 1) {
+                        $scope.quantity--;
+                    }
+                };
 
                 const pathParts = $window.location.pathname.split('/');
                 const categoryId = pathParts[3];
@@ -57,6 +78,30 @@
                         console.error(err);
                     })
 
+                $scope.addToCart = function () {
+                    if(confirm('Do you want to add the item into cart?')) {
+                        const postData = {
+                            user_id             : '3',
+                            product_id          : $scope.productData.product_id,
+                            product_name        : $scope.productData.name,
+                            product_qty         : $scope.quantity,
+                            product_price       : $scope.productData.price,
+                            product_image_url   : $scope.productData.image_url,
+                        };
+
+                        $http.post('<?= base_url('/api/ec/addItemIntoCart') ?>', postData)
+                                .then((res) => {
+                                    if(res.data.status == "Success") {
+                                        alert(`Added ${postData.product_qty} x "${postData.product_name}" to cart`);
+
+                                        cartService.refreshCartList().then(function(items) {
+                                            const totalQty = cartService.getCartQty();
+                                            $rootScope.$broadcast('cartUpdated', totalQty);
+                                        });
+                                    }
+                                })
+                    }
+                }
 
             });
         </script>

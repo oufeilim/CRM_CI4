@@ -81,8 +81,6 @@ class Sales_order extends BaseController
             
             // sales order
             $mode               = $formData->mode;
-            $id                 = $formData->id;
-            $serial_number      = $formData->serial_number;
             $order_date         = $formData->order_date;
             $total_amount       = $formData->total_amount;
             $discount_amount    = $formData->discount_amount;
@@ -92,15 +90,27 @@ class Sales_order extends BaseController
             $user_email         = $formData->user_email;
             $user_contact       = $formData->user_contact;
             $user_address       = $formData->user_address;
-            $order_status       = $formData->order_status;
-            $payment_status     = $formData->payment_status;
+            
+            if($mode != "consumerAdd") {
+                $order_status       = $formData->order_status;
+                $payment_status     = $formData->payment_status;
+                $serial_number      = $formData->serial_number;
+                $id                 = $formData->id;
+                $admin_remark       = $formData->admin_remark;
+            } else {
+                $order_status       = 0;
+                $payment_status     = 0;
+                $serial_number      = 0;
+                $id                 = 0;
+                $admin_remark       = '';
+            }
+
             $payment_date       = $formData->payment_date;
             $payment_method     = $formData->payment_method;
-            $admin_remark       = $formData->admin_remark;
         
             $sales_order_detail = $formData->sales_order_detail;
 
-            if($mode == "Add") {
+            if($mode == "Add" || $mode == "consumerAdd") {
                 // Insert sales order to get sales_order_id
                 $sales_order_model = new Sales_order_model();
 
@@ -114,13 +124,11 @@ class Sales_order extends BaseController
                     'total_amount'      => number_format($total_amount, 2, '.' , ''),
                     'discount_amount'   => number_format($discount_amount, 2, '.' , ''),
                     'final_amount'      => number_format($final_amount, 2, '.' , ''),
-                    'order_status'      => $order_status,
                     'user_id'           => $user_id,
                     'user_name'         => $user_name,
                     'user_email'        => $user_email,
                     'user_address'      => $user_address,
                     'user_contact'      => $user_contact,
-                    'payment_status'    => $payment_status,
                     'payment_date'      => $payment_date,
                     'payment_method'    => $payment_method,
                     'admin_remark'      => $admin_remark
@@ -344,6 +352,7 @@ class Sales_order extends BaseController
                 return $this->response->setStatusCode(200)->setJSON([
                     'status' => 'Success',
                     'message'=> 'Done.',
+                    'serial_num' => $serial_number,
                 ]);
             }            
         } catch (Exception $e) {
@@ -358,6 +367,7 @@ class Sales_order extends BaseController
 
     public function sales_order_del() {
         $targetID = $this->request->getJSON();
+        $targetID = $targetID->id;
 
         try {
             

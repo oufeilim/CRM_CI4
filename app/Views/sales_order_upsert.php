@@ -286,10 +286,8 @@
         // #region Datepicker
         $timeout(function() {
             const commonOptions = {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i:S",
+                dateFormat: "Y-m-d",
                 time_24hr: true,
-                enableSeconds: true,
                 defaultDate: $scope.order_date ? new Date($scope.order_date) : new Date(),
                 onReady: function(selectedDates, dateStr, instance) {
                     const inputId = instance.input.id;

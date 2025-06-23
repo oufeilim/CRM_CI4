@@ -39,6 +39,33 @@ class User extends BaseController
         }
     }
 
+    public function fetchUserOne() {
+        $id = $this->request->getJSON();
+        $id = $id->user_id;
+
+        try {
+            $user_model = new User_model();
+            $user = $user_model->where(['user_id' => $id, 'is_deleted' => 0])->first();
+
+            if(!$user) {
+                return $this->response->setStatusCode(404)->setJSON([
+                    'status'    => 'Error', 
+                    'message'   => 'No data exist',
+                    'errors'    => $user_model->error()
+                ]);
+            }
+
+            return $this->response->setStatusCode(200)->setJSON($user);
+
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Server error occurred',
+                'errors'    => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function user_upsert($id=""){
         if($id == "") {
             $this->data['mode'] = "Add";

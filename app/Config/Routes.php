@@ -28,6 +28,7 @@ $routes->post('/company_del', 'Company::company_del');
 $routes->get('/user_list', 'User::user_list');
 
 $routes->get('/api/fetchUserList', 'User::fetchUserList');
+$routes->post('/api/fetchUserOne', 'User::fetchUserOne');
 
 $routes->get('/user_upsert', 'User::user_upsert');
 $routes->get('/user_upsert/(:num)', 'User::user_upsert/$1');
@@ -87,3 +88,21 @@ $routes->get('/api/ec/getCategoryProductList/(:num)/(:any)', 'Ec::getCategoryPro
 $routes->get('/ec/product_detail/(:num)/(:any)', 'Ec::product_detail/$1/$2');
 $routes->get('/api/ec/getProductDetail/(:num)/(:any)', 'Ec::getProductDetail/$1/$2');
 /* End EC */
+
+
+/* Start EC Cart */
+$routes->get('/ec/cart', 'Ec::cart');
+
+$routes->post('/api/ec/addItemIntoCart', 'Ec::addItemIntoCart');
+
+$routes->get('/api/ec/fetchCartList', 'Ec::fetchCartList');
+$routes->post('/api/ec/updateCartItemQty', 'Ec::updateCartItemQty');
+$routes->post('/api/ec/deleteCartItem', 'Ec::deleteCartItem');
+$routes->post('/api/ec/deleteCartItems', 'Ec::deleteCartItems');
+/* End EC Cart */
+
+
+/* Start Checkout */
+$routes->get('/ec/checkout', 'Ec::checkout');
+$routes->get('/ec/checkout_success', 'Ec::checkout_success');
+/* End Checkout */
