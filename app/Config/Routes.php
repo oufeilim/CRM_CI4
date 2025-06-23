@@ -23,7 +23,6 @@ $routes->post('/company_del', 'Company::company_del');
 /* End Company */
 
 
-
 /* Start User */
 $routes->get('/user_list', 'User::user_list');
 
@@ -35,7 +34,6 @@ $routes->get('/user_upsert/(:num)', 'User::user_upsert/$1');
 $routes->post('/user_submit', 'User::user_submit');
 $routes->post('/user_del', 'User::user_del');
 /* End User */
-
 
 
 /* Start Category */
@@ -50,7 +48,6 @@ $routes->post('/category_del', 'Category::category_del');
 /* End Category */
 
 
-
 /* Start Product */
 $routes->get('/product_list', 'Product::product_list');
 
@@ -63,7 +60,6 @@ $routes->post('/product_del', 'Product::product_del');
 /* End Product */
 
 
-
 /* Start Sales Order */
 $routes->get('/sales_order_list', 'Sales_order::sales_order_list');
 
@@ -74,6 +70,18 @@ $routes->get('/sales_order_upsert/(:num)', 'Sales_order::sales_order_upsert/$1')
 $routes->post('/sales_order_submit', 'Sales_order::sales_order_submit');
 $routes->post('/sales_order_del', 'Sales_order::sales_order_del');
 /* End Sales Order */
+
+
+/* Start Promo Code */
+$routes->get('/promo_code_list', 'Promo_code::promo_code_list');
+
+$routes->get('/api/fetchPromoCodeList', 'Promo_code::fetchPromoCodeList');
+
+$routes->get('/promo_code_upsert', 'Promo_code::promo_code_upsert');
+$routes->get('/promo_code_upsert/(:num)', 'Promo_code::promo_code_upsert/$1');
+$routes->post('/promo_code_submit', 'Promo_code::promo_code_submit');
+$routes->post('/promo_code_del', 'Promo_code::promo_code_del');
+/* End Promo Code */
 
 
 /* Start EC */

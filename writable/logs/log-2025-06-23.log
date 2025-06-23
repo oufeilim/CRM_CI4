@@ -976,3 +976,108 @@ in SYSTEMPATH\Router\Router.php on line 741.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 15:42:12 --> ErrorException: Undefined variable $mode
+[Method: GET, Route: promo_code_upsert]
+in APPPATH\Views\promo_code_upsert.php on line 3.
+ 1 APPPATH\Views\promo_code_upsert.php(3): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $mode', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\promo_code_upsert.php', 3)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\promo_code_upsert.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('promo_code_upsert', [], true)
+ 5 APPPATH\Controllers\Promo_code.php(22): view('promo_code_upsert')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_upsert()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 15:44:04 --> ArgumentCountError: Too few arguments to function App\Controllers\Promo_code::promo_code_upsert(), 0 passed in C:\xampp\htdocs\CRM_CI4\system\CodeIgniter.php on line 933 and exactly 1 expected
+[Method: GET, Route: promo_code_upsert]
+in APPPATH\Controllers\Promo_code.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_upsert()
+ 2 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 16:29:47 --> ErrorException: Undefined property: stdClass::$mode
+[Method: POST, Route: promo_code_submit]
+in APPPATH\Controllers\Promo_code.php on line 39.
+ 1 APPPATH\Controllers\Promo_code.php(39): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$mode', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Promo_code.php', 39)
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_submit()
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 16:30:03 --> ErrorException: Undefined property: stdClass::$mode
+[Method: POST, Route: promo_code_submit]
+in APPPATH\Controllers\Promo_code.php on line 39.
+ 1 APPPATH\Controllers\Promo_code.php(39): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$mode', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Promo_code.php', 39)
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_submit()
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 16:53:00 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method APP\Models\Promo_code_model::getOne
+[Method: GET, Route: promo_code_upsert/1]
+in SYSTEMPATH\Model.php on line 930.
+ 1 APPPATH\Controllers\Promo_code.php(53): CodeIgniter\Model->__call('getOne', [...])
+ 2 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_upsert('1')
+ 3 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 16:53:57 --> Error: Cannot use object of type APP\Models\Promo_code_model as array
+[Method: GET, Route: promo_code_upsert/2]
+in APPPATH\Views\promo_code_upsert.php on line 62.
+ 1 SYSTEMPATH\View\View.php(224): include()
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('promo_code_upsert', [], true)
+ 4 APPPATH\Controllers\Promo_code.php(60): view('promo_code_upsert', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_upsert('2')
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 16:55:25 --> Error: Cannot use object of type APP\Models\Promo_code_model as array
+[Method: GET, Route: promo_code_upsert/2]
+in APPPATH\Views\promo_code_upsert.php on line 62.
+ 1 SYSTEMPATH\View\View.php(224): include()
+ 2 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('promo_code_upsert', [], true)
+ 4 APPPATH\Controllers\Promo_code.php(60): view('promo_code_upsert', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_upsert('2')
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 16:57:46 --> ErrorException: Undefined array key "maxcap"
+[Method: GET, Route: promo_code_upsert/1]
+in APPPATH\Views\promo_code_upsert.php on line 65.
+ 1 APPPATH\Views\promo_code_upsert.php(65): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "maxcap"', 'C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\promo_code_upsert.php', 65)
+ 2 SYSTEMPATH\View\View.php(224): include('C:\\xampp\\htdocs\\CRM_CI4\\app\\Views\\promo_code_upsert.php')
+ 3 SYSTEMPATH\View\View.php(227): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1173): CodeIgniter\View\View->render('promo_code_upsert', [], true)
+ 5 APPPATH\Controllers\Promo_code.php(60): view('promo_code_upsert', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Promo_code->promo_code_upsert('1')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Promo_code))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-23 17:03:07 --> ParseError: syntax error, unexpected token "}"
+[Method: GET, Route: promo_code_list]
+in APPPATH\Controllers\Promo_code.php on line 105.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(295): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Promo_code.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(271): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Promo_code')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Promo_code')
+ 4 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Promo_code', true)
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
