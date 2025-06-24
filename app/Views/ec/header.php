@@ -131,6 +131,31 @@
                     },
                     bulkDeleteCartItems: function(cartIds) {
                         return $http.post('<?= base_url("api/ec/deleteCartItems") ?>', { ids: cartIds });
+                    },
+                    checkDiscount: function(ori_price, type, value, maxcap) {
+                        var deductAmount = 0;
+                        var finalAmount = 0;
+
+                        if(type == "0") {
+                            deductAmount = value;
+                            finalAmount = ori_price - deductAmount;
+
+                            if(finalAmount < 0) {
+                                finalAmount = 1;
+                            }
+                        }
+                        
+                        if (type == "1") {
+                            deductAmount = ori_price * value;
+                            
+                            if(deductAmount > maxcap) {
+                                deductAmount = maxcap;
+                            }
+
+                            finalAmount = ori_price - deductAmount;
+                        }
+
+                        return {finalAmount, deductAmount};
                     }
                 };
             })

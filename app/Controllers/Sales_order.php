@@ -173,6 +173,7 @@ class Sales_order extends BaseController
                 return $this->response->setStatusCode(200)->setJSON([
                     'status'    => 'Success',
                     'message'   => 'Data inserted.',
+                    'serial_num' => $serial_num,
                 ]);
             } else {
                 $sales_order_model        = new Sales_order_model();
@@ -352,9 +353,8 @@ class Sales_order extends BaseController
                 return $this->response->setStatusCode(200)->setJSON([
                     'status' => 'Success',
                     'message'=> 'Done.',
-                    'serial_num' => $serial_number,
                 ]);
-            }            
+            }
         } catch (Exception $e) {
             return $this->response->setStatusCode(500)->setJSON([
                 'status'    => 'Error',

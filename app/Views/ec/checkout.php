@@ -66,10 +66,10 @@
                         </div>
     
                         <div class="col-6 form-group my-2">
-                            <label for="coupon" class="form-label">Coupon Code</label>
+                            <label for="promo" class="form-label">Promo Code</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="coupon" ng-model="couponCode" placeholder="Enter coupon">
-                                <button class="btn btn-outline-secondary" type="button" ng-click="applyCoupon()">Apply</button>
+                                <input type="text" class="form-control" id="promoCode" ng-model="promo.code" placeholder="Enter promo code">
+                                <button class="btn btn-outline-secondary" type="button" ng-click="applyPromoCode()">Apply</button>
                             </div>
                             <small class="text-danger" ng-if="couponError">{{ couponError }}</small>
                             <small class="text-success" ng-if="couponSuccess">{{ couponSuccess }}</small>
@@ -138,9 +138,19 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
     $scope.userData         = [];
     $scope.cartList         = [];
     $scope.subTotal         = 0;
-    $scope.discount         = 0;
-    $scope.finalAmount      = 0;
     $scope.payment_method   = '0'; // default
+    $scope.promo = {
+        code: '',
+    }
+
+    const promoInfo = JSON.parse(localStorage.getItem('promoInfo'));
+    $scope.discount = parseFloat(localStorage.getItem('discountAmount')).toFixed(2) || 0;
+    $scope.finalAmount = parseFloat(localStorage.getItem('finalAmount')).toFixed(2) || 0;
+
+    
+    if (promoInfo) {
+        $scope.couponCode = promoInfo.code;
+    }
 
     // #region Assign value
     $http.post('<?= base_url('/api/fetchUserOne') ?>', {user_id: 3})
@@ -220,14 +230,14 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
                 'sales_order_detail': $scope.cartList,
             }
 
-            // console.log(postData);
             $http.post('<?= base_url('sales_order_submit') ?>', postData)
                     .then((res) => {
                         if(res.data.status == "Success") {
                             alert('Success');
                             const sn = res.data.serial_num;
-                            const cartIdsToDelete = $scope.cartList.map(item => item.cart_id);
-
+                            localStorage.removeItem('promoInfo');
+                            localStorage.removeItem('discountAmount');
+                            localStorage.removeItem('finalAmount');
                             const cartIds = $scope.cartList.map(item => item.cart_id);
 
                             cartService.bulkDeleteCartItems(cartIds)
@@ -252,6 +262,47 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
         }
     }
     // #endregion
+
+    $scope.applyPromoCode = function () {
+        $scope.submittedPromoCode = true;
+
+        if($scope.discount <= 0) {
+            // Simple validation
+            if (!$scope.promo.code || $scope.promo.code.trim() === '') {
+                $scope.couponError = 'Please enter a valid promo code.';
+                $scope.couponSuccess = '';
+                return;
+            }
+
+            $http.post('<?= base_url('api/fetchPromoCodeOne') ?>', { 'code': $scope.promo.code })
+                .then((res) => {
+                    $scope.couponError = '';
+                    $scope.couponSuccess = 'Added!';
+
+                    $scope.promo = {
+                        code: res.data.code,
+                        type: res.data.type,
+                        value: res.data.value,
+                        maxcap: res.data.max_cap
+                    }
+
+                    var result = cartService.checkDiscount($scope.subtotal, $scope.promo.type, $scope.promo.value, $scope.promo.maxcap);
+
+                    $scope.discount = parseFloat(result.deductAmount).toFixed(2);
+                    $scope.final_amount = result.finalAmount.toFixed(2);
+
+                    // Store amounts
+                    localStorage.setItem('discountAmount', $scope.discount);
+                    localStorage.setItem('finalAmount', $scope.final_amount);
+                })
+                .catch((err) => {
+                    $scope.couponError = 'Please enter a valid promo code.'
+                    console.log(err);
+                })
+        } else {
+            $scope.couponError = 'Discount has already applied.';
+        }
+    }
 
 });
 </script>

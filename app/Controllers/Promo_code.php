@@ -23,7 +23,37 @@ class Promo_code extends BaseController
                 'is_deleted' => 0
             ])->findAll();
 
-            if(!$promoCodeData) {
+            if(empty($promoCodeData)) {
+                return $this->response->setStatusCode(404)->setJSON([
+                    'status' => 'Error',
+                    'message' => 'No data found',
+                    'errors' => $promo_code_model->errors()
+                ]);
+            }
+
+            return $this->response->setStatusCode(200)->setJSON($promoCodeData);
+
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status' => 'Error',
+                'message' => 'Error occurred while fetching database',
+                'errors' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function fetchPromoCodeOne() {
+        $code = $this->request->getJSON(true);
+        $code = $code['code'];
+
+        try {
+            $promo_code_model = new Promo_code_model();
+            $promoCodeData = $promo_code_model->where([
+                'code' => $code,
+                'is_deleted' => 0
+            ])->first();
+
+            if(empty($promoCodeData)) {
                 return $this->response->setStatusCode(404)->setJSON([
                     'status' => 'Error',
                     'message' => 'No data found',
@@ -158,6 +188,10 @@ class Promo_code extends BaseController
                 'errors'    => $e->getMessage(),
             ]);
         }
+    }
+
+    public function test() {
+        return view('ec/test');
     }
 
 }

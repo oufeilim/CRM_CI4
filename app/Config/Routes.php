@@ -69,6 +69,8 @@ $routes->get('/sales_order_upsert', 'Sales_order::sales_order_upsert');
 $routes->get('/sales_order_upsert/(:num)', 'Sales_order::sales_order_upsert/$1');
 $routes->post('/sales_order_submit', 'Sales_order::sales_order_submit');
 $routes->post('/sales_order_del', 'Sales_order::sales_order_del');
+
+$routes->get('/sales_order/print/(:num)', 'Sales_order::print_invoice/$1');
 /* End Sales Order */
 
 
@@ -76,6 +78,7 @@ $routes->post('/sales_order_del', 'Sales_order::sales_order_del');
 $routes->get('/promo_code_list', 'Promo_code::promo_code_list');
 
 $routes->get('/api/fetchPromoCodeList', 'Promo_code::fetchPromoCodeList');
+$routes->post('/api/fetchPromoCodeOne', 'Promo_code::fetchPromoCodeOne');
 
 $routes->get('/promo_code_upsert', 'Promo_code::promo_code_upsert');
 $routes->get('/promo_code_upsert/(:num)', 'Promo_code::promo_code_upsert/$1');
