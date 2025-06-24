@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\Sales_order_model;
 use App\Models\Sales_order_detail_model;
 
+use App\Libraries\Mpdf;
+
 use Exception;
 
 class Sales_order extends BaseController
@@ -398,5 +400,16 @@ class Sales_order extends BaseController
                 'errors'    => $e->getMessage(),
             ]);
         }
+    }
+
+    public function sales_order_invoice($id) {
+        $pdf = new Mpdf([
+            'allow_url_fopen' => true,
+        ]);
+
+        $body = $pdf->outputInvoice($id, 'view');
+
+        return $this->response->setHeader('Content-Type', 'application/pdf')
+                              ->setBody($body);
     }
 }

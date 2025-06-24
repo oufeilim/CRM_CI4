@@ -70,7 +70,8 @@ $routes->get('/sales_order_upsert/(:num)', 'Sales_order::sales_order_upsert/$1')
 $routes->post('/sales_order_submit', 'Sales_order::sales_order_submit');
 $routes->post('/sales_order_del', 'Sales_order::sales_order_del');
 
-$routes->get('/sales_order/print/(:num)', 'Sales_order::print_invoice/$1');
+// $routes->get('/sales_order/print/(:num)', 'Sales_order::print_invoice/$1');
+$routes->get('/sales_order_invoice/(:num)', 'Sales_order::sales_order_invoice/$1');
 /* End Sales Order */
 
 

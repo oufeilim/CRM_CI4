@@ -1138,3 +1138,141 @@ in SYSTEMPATH\Router\Router.php on line 741.
  5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
  6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 14:33:45 --> ErrorException: fopen(C:\xampp\htdocs\CRM_CI4\public\invoice/Invoice): Failed to open stream: No such file or directory
+[Method: GET, Route: test]
+in VENDORPATH\mpdf\mpdf\src\Mpdf.php on line 9629.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fopen(C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice): Failed to open stream: No such file or directory', 'C:\\xampp\\htdocs\\CRM_CI4\\vendor\\mpdf\\mpdf\\src\\Mpdf.php', 9629)
+ 2 VENDORPATH\mpdf\mpdf\src\Mpdf.php(9629): fopen('C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice', 'wb')
+ 3 APPPATH\Libraries\Mpdf.php(43): Mpdf\Mpdf->Output('C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice', 'F')
+ 4 APPPATH\Controllers\Sales_order.php(529): App\Libraries\Mpdf->output('Invoice', 'file')
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->test()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 14:33:46 --> ErrorException: fopen(C:\xampp\htdocs\CRM_CI4\public\invoice/Invoice): Failed to open stream: No such file or directory
+[Method: GET, Route: test]
+in VENDORPATH\mpdf\mpdf\src\Mpdf.php on line 9629.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fopen(C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice): Failed to open stream: No such file or directory', 'C:\\xampp\\htdocs\\CRM_CI4\\vendor\\mpdf\\mpdf\\src\\Mpdf.php', 9629)
+ 2 VENDORPATH\mpdf\mpdf\src\Mpdf.php(9629): fopen('C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice', 'wb')
+ 3 APPPATH\Libraries\Mpdf.php(43): Mpdf\Mpdf->Output('C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice', 'F')
+ 4 APPPATH\Controllers\Sales_order.php(529): App\Libraries\Mpdf->output('Invoice', 'file')
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->test()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 14:34:06 --> ErrorException: fopen(C:\xampp\htdocs\CRM_CI4\public\invoice/Invoice.pdf): Failed to open stream: No such file or directory
+[Method: GET, Route: test]
+in VENDORPATH\mpdf\mpdf\src\Mpdf.php on line 9629.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fopen(C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice.pdf): Failed to open stream: No such file or directory', 'C:\\xampp\\htdocs\\CRM_CI4\\vendor\\mpdf\\mpdf\\src\\Mpdf.php', 9629)
+ 2 VENDORPATH\mpdf\mpdf\src\Mpdf.php(9629): fopen('C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice.pdf', 'wb')
+ 3 APPPATH\Libraries\Mpdf.php(43): Mpdf\Mpdf->Output('C:\\xampp\\htdocs\\CRM_CI4\\public\\invoice/Invoice.pdf', 'F')
+ 4 APPPATH\Controllers\Sales_order.php(529): App\Libraries\Mpdf->output('Invoice.pdf', 'file')
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->test()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:46:16 --> ParseError: syntax error, unexpected token "return"
+[Method: GET, Route: sales_order_upsert/17]
+in APPPATH\Controllers\Sales_order.php on line 539.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(295): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Sales_order.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(271): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Sales_order')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Sales_order')
+ 4 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Sales_order', true)
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:46:19 --> ParseError: syntax error, unexpected token "return"
+[Method: GET, Route: sales_order_list]
+in APPPATH\Controllers\Sales_order.php on line 539.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(295): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\xampp\\htdocs\\CRM_CI4\\app\\Controllers\\Sales_order.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(271): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Sales_order')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Sales_order')
+ 4 SYSTEMPATH\CodeIgniter.php(885): class_exists('\\App\\Controllers\\Sales_order', true)
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:49:13 --> Mpdf\MpdfException: Incorrect output destination VIEW
+[Method: GET, Route: sales_order_invoice]
+in VENDORPATH\mpdf\mpdf\src\Mpdf.php on line 9645.
+ 1 APPPATH\Libraries\Mpdf.php(220): Mpdf\Mpdf->Output('SN-20250623-143030-6858f4863bad5-5f33(20250624154913).pdf', 'VIEW')
+ 2 APPPATH\Controllers\Sales_order.php(537): App\Libraries\Mpdf->outputInvoice(10, 'view')
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->sales_order_invoice()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:52:06 --> Mpdf\MpdfException: Incorrect output destination VIEW
+[Method: GET, Route: sales_order_invoice]
+in VENDORPATH\mpdf\mpdf\src\Mpdf.php on line 9645.
+ 1 APPPATH\Libraries\Mpdf.php(220): Mpdf\Mpdf->Output('SN-20250623-143030-6858f4863bad5-5f33(20250624155206).pdf', 'VIEW')
+ 2 APPPATH\Controllers\Sales_order.php(537): App\Libraries\Mpdf->outputInvoice(10, 'view')
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->sales_order_invoice()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:53:59 --> Mpdf\MpdfException: Incorrect output destination VIEW
+[Method: GET, Route: sales_order_invoice]
+in VENDORPATH\mpdf\mpdf\src\Mpdf.php on line 9645.
+ 1 APPPATH\Libraries\Mpdf.php(221): Mpdf\Mpdf->Output('SN-20250623-143030-6858f4863bad5-5f33(20250624155359).pdf', 'VIEW')
+ 2 APPPATH\Controllers\Sales_order.php(537): App\Libraries\Mpdf->outputInvoice(10, 'view')
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->sales_order_invoice()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:58:16 --> Mpdf\MpdfException: Call to undefined method Mpdf\Mpdf::writeHTMLHeader()
+[Method: GET, Route: sales_order_invoice]
+in VENDORPATH\mpdf\mpdf\src\Strict.php on line 15.
+ 1 APPPATH\Libraries\Mpdf.php(174): Mpdf\Mpdf->__call('writeHTMLHeader', [])
+ 2 APPPATH\Controllers\Sales_order.php(537): App\Libraries\Mpdf->outputInvoice(10, 'view')
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->sales_order_invoice()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 15:58:16 --> Mpdf\MpdfException: Call to undefined method Mpdf\Mpdf::writeHTMLHeader()
+[Method: GET, Route: sales_order_invoice]
+in VENDORPATH\mpdf\mpdf\src\Strict.php on line 15.
+ 1 APPPATH\Libraries\Mpdf.php(174): Mpdf\Mpdf->__call('writeHTMLHeader', [])
+ 2 APPPATH\Controllers\Sales_order.php(537): App\Libraries\Mpdf->outputInvoice(10, 'view')
+ 3 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Sales_order->sales_order_invoice()
+ 4 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales_order))
+ 5 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 16:18:10 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ item.product_image_url }}"
+[Method: GET, Route: %7B%7B%20item.product_image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ item.product_image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ item.product_image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-06-24 16:18:39 --> CodeIgniter\HTTP\Exceptions\BadRequestException: The URI you submitted has disallowed characters: "{{ item.product_image_url }}"
+[Method: GET, Route: %7B%7B%20item.product_image_url%20%7D%7D]
+in SYSTEMPATH\Router\Router.php on line 741.
+ 1 SYSTEMPATH\Router\Router.php(207): CodeIgniter\Router\Router->checkDisallowedChars('{{ item.product_image_url }}')
+ 2 SYSTEMPATH\CodeIgniter.php(832): CodeIgniter\Router\Router->handle('{{ item.product_image_url }}')
+ 3 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
