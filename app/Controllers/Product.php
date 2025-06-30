@@ -17,12 +17,22 @@ class Product extends BaseController
 
     public function fetchProductList() {
         try {
+            $parentId = $this->request->getGet('parent_id');
+
             $product_model = new Product_model();
             $category_model = new Category_model();
-            $productList = $product_model->getAllProductList();
+
+            if($parentId == null) {
+                $productList = $product_model->getParentProductList();
+            } else if ($parentId == 0) {
+                $productList = $product_model->getAllProductList();
+            } else {
+                $productList = $product_model->getProductChildList($parentId);
+            }
+
 
             if(!$productList) {
-                return $this->response->setStatusCode(404)->setJSON([
+                return $this->response->setStatusCode(200)->setJSON([
                     'status'    => 'Error', 
                     'message'   => 'No data exist',
                     'errors'    => $product_model->error()
@@ -211,6 +221,62 @@ class Product extends BaseController
                 'message'   => 'Operation success.',
             ]);
 
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Server error occurred',
+                'errors'    => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function product_submit_variation() {
+        $formData = $this->request->getJSON(true);
+
+        try {
+
+            $product_id = $formData['product_id'];
+            $variations = $formData['variations'];
+
+            $product_model = new Product_model();
+            $parent = $product_model->find($product_id);
+            $category_id = $parent['category_id'];
+            $description = $parent['description'];
+            $priority = $parent['priority'];
+
+            foreach($variations as $v) {
+                $name = $v['name'];
+                $slug = $this->slugify($name);
+
+                $inserted = $product_model->insert([
+                    'created_date'  => date('Y-m-d H:i:s'),
+                    'name'          => $name,
+                    'slug'          => $slug,
+                    'category_id'   => $category_id,
+                    'parent_id'     => $product_id,
+                    'description'   => $description,
+                    'price'         => $v['price'],
+                    'stock_qty'     => $v['qty'],
+                    'image_url'     => '',
+                    'is_display'    => 1,
+                    'priority'      => $priority
+                ]);
+
+                if (!$inserted) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Failed to insert data into database.',
+                        'errors'    => $product_model->error(),
+                    ]);
+                }
+            }
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'status'    => 'Success',
+                'message'   => 'Operation success.',
+            ]);
+
+            
         } catch (Exception $e) {
             return $this->response->setStatusCode(500)->setJSON([
                 'status'    => 'Error',

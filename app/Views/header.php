@@ -88,6 +88,12 @@
                                         Product
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= base_url('attribute_list') ?>">
+                                        <svg class="bi" aria-hidden="true"></svg>
+                                        Attribute
+                                    </a>
+                                </li>
 
                                 <hr />
 

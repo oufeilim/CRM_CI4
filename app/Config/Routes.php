@@ -56,8 +56,22 @@ $routes->get('/api/fetchProductList', 'Product::fetchProductList');
 $routes->get('/product_upsert', 'Product::product_upsert');
 $routes->get('/product_upsert/(:num)', 'Product::product_upsert/$1');
 $routes->post('/product_submit', 'Product::product_submit');
+$routes->post('/product_submit_variation', 'Product::product_submit_variation');
 $routes->post('/product_del', 'Product::product_del');
 /* End Product */
+
+
+/* Start Attribute */
+$routes->get('/attribute_list', 'Attribute::attribute_list');
+
+$routes->get('/api/fetchAttributeList', 'Attribute::fetchattributeList');
+$routes->get('/api/fetchParentAttributeList', 'Attribute::fetchParentAttributeList');
+
+$routes->get('/attribute_upsert', 'Attribute::attribute_upsert');
+$routes->get('/attribute_upsert/(:num)', 'Attribute::attribute_upsert/$1');
+$routes->post('/attribute_submit', 'Attribute::attribute_submit');
+$routes->post('/attribute_del', 'Attribute::attribute_del');
+/* End Attribute */
 
 
 /* Start Sales Order */
