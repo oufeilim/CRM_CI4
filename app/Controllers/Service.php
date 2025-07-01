@@ -12,6 +12,7 @@ class Service extends BaseController
 {
     private $data = [];
 
+    #region Service / Service Zone CRUD
     public function service_list()
     {
         return view('header').view('service_list').view('footer');
@@ -197,4 +198,157 @@ class Service extends BaseController
 
 
     }
+
+    public function service_zone_list()
+    {
+        return view('header').view('service_zone_list').view('footer');
+    }
+
+    public function fetchServiceZoneList() {
+        $service_zone_model = new Service_zone_model();
+        $serviceZoneList = $service_zone_model->where([
+            'is_deleted' => 0,
+        ])->findAll();
+
+        if(!$serviceZoneList) {
+            return $this->response->setStatusCode(200)->setJSON([
+                'status'    => 'Error', 
+                'message'   => 'No data exist',
+                'errors'    => $service_zone_model->error()
+            ]);
+        }
+
+        return $this->response->setStatusCode(200)->setJSON($serviceZoneList);
+
+    }
+
+    public function service_zone_upsert($id="")
+    {
+        if($id == '') {
+            $this->data['mode'] = 'Add';
+        } else {
+            $this->data['mode'] = 'Edit';
+            $this->data['id'] = $id;
+
+            $service_zone_model = new Service_zone_model();
+            $serviceZoneData = $service_zone_model->where([
+                'service_Zone_id' => $id,
+            ])->first();
+            $this->data['service_ZoneData'] = $serviceZoneData;
+        }
+
+        return view('header').view('service_Zone_upsert', $this->data).view('footer');
+    }
+
+    public function service_zone_submit() {
+
+        $formData = $this->request->getJSON();
+
+        $mode       = $formData->mode;
+        $id         = $formData->id;
+        $service_id = $formData->service;
+        $zone       = $formData->zone;
+        $title      = $formData->title;
+
+        $service_zone_model = new Service_zone_model();
+
+        try {
+        
+            if($mode == 'Add') {
+
+                $inserted = $service_zone_model->insert([
+                    'created_date'  => date('Y-m-d H:i:s'),
+                    'service_id'    => $service_id,
+                    'zone'          => $zone,
+                    'title'         => $title,
+                ]);
+
+                if(!$inserted) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Error occurred while insert data.',
+                        'errors'    => $service_zone_model->errors()
+                    ]);
+                }
+
+                return $this->response->setStatusCode(200)->setJSON([
+                    'status'    => 'Success',
+                    'message'   => 'Done.',
+                ]);
+
+            } else {
+
+                $modified = $service_zone_model->insert([
+                    'modified_date'  => date('Y-m-d H:i:s'),
+                    'service_id'     => $service_id,                 
+                    'zone'           => $zone,
+                    'title'          => $title,
+                ]);
+
+                if(!$modified) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Error occurred while insert data.',
+                        'errors'    => $service_zone_model->errors()
+                    ]);
+                }
+
+                return $this->response->setStatusCode(200)->setJSON([
+                    'status'    => 'Success',
+                    'message'   => 'Done.',
+                ]);
+
+            }
+            
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Database error.',
+                'errors'    => $e->getMessage()
+            ]);
+            
+        }
+
+    }
+
+    public function service_zone_del() {
+
+        $targetID = $this->request->getJSON();
+
+        try {
+            
+            $id = $targetID->id;
+            $service_zone_model = new Service_zone_model();
+
+
+            $deleted = $service_zone_model->update($id, [
+                'is_deleted'    => 1,
+                'modified_date' => date('Y-m-d H:i:s'),
+            ]);
+
+            if(!$deleted) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'status'    => 'Error',
+                    'message'   => 'Failed to delete data.',
+                    'errors'    => $service_zone_model->errors(),
+                ]);
+            }
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'status'    => 'Success',
+                'message'   => 'Operation success.',
+            ]);
+            
+        } catch (Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'status'    => 'Error',
+                'message'   => 'Server error occurred',
+                'errors'    => $e->getMessage(),
+            ]);
+        }
+
+    }
+    #endregion
+
+    
 }

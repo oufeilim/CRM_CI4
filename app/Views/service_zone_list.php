@@ -1,10 +1,10 @@
 
-                <main ng-controller="serviceListTable" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <main ng-controller="serviceZoneListTable" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Service List</h1>
+                        <h1 class="h2">Service Zone List</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <div class="btn-group me-2">
-                                <a class="btn btn-sm btn-outline-primary" href="<?= base_url('service_upsert') ?>" >
+                                <a class="btn btn-sm btn-outline-primary" href="<?= base_url('service_zone_upsert') ?>" >
                                     <!-- Add SVG -->
                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                                         <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
@@ -20,33 +20,29 @@
                             <thead>
                                 <tr>
                                     <th scope="col" style="width: 5%">#</th>
-                                    <th scope="col" style="width: 20%">Title</th>
-                                    <th scope="col" style="width: 10%">Description</th>
-                                    <th scope="col" style="width: 10%">Service Type</th>
-                                    <th scope="col" style="width: 10%">Status</th>
-                                    <th scope="col" style="width: 10%">Base weight</th>
+                                    <th scope="col" style="width: 20%">Service</th>
+                                    <th scope="col" style="width: 20%">Zone</th>
+                                    <th scope="col" style="width: 10%">Title</th>
                                     <th scope="col" style="width: 7%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="x in serviceList" ng-if="serviceList.length >= 1">
-                                    <td>{{ x.service_id }}</td>
-                                    <td>{{ x.title }}</td>
-                                    <td>{{ x.description }}</td>
-                                    <td>{{ x.service_type == 0 ? 'Domestic' : 'International' }}</td>                                    
-                                    <td>{{ x.status == 1 ? 'Active' : 'Inactive' }}</td>
-                                    <td>{{ x.base_weight + ' kg' }}</td>
+                                <tr ng-repeat="x in serviceZoneList" ng-if="serviceZoneList.length >= 1">
+                                    <td>{{ x.service_zone_id }}</td>
+                                    <td>{{ serviceNameList[x.service_id] || 'Unknown Service' }}</td>
+                                    <td>{{ x.zone }}</td>
+                                    <td>{{ x.title }}</td>                                    
                                     <td>
                                         <div class="btn-toolbar mb-2 mb-md-0">
                                             <div class="btn-group me-2">
-                                                <a href="<?= base_url('service_upsert/') ?>{{x.service_id}}" class="btn btn-sm btn-secondary">
+                                                <a href="<?= base_url('servicezone__upsert/') ?>{{x.service_zone_id}}" class="btn btn-sm btn-secondary">
                                                     <!-- Edit SVG -->
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                                     </svg>
                                                 </a>
-                                                <button type="button" ng-click="deleteService(x.service_id)" class="btn btn-sm btn-danger">
+                                                <button type="button" ng-click="deleteServiceZone(x.service_zone_id)" class="btn btn-sm btn-danger">
                                                     <!-- Delete SVG -->
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -58,7 +54,7 @@
                                     </td>
                                 </tr>
 
-                                <tr ng-if="serviceList.length == 0">
+                                <tr ng-if="serviceZoneList.length == 0">
                                     <td colspan="8">No data exist.</td>
                                 </tr>
                             </tbody>
@@ -69,38 +65,61 @@
         </div>
 
 <script>
-    angular.module('myApp').controller('serviceListTable', function($scope, $http) {
+    angular.module('myApp').controller('serviceZoneListTable', function($scope, $http, $q) {
 
+        $scope.serviceZoneList = [];
         $scope.serviceList = [];
+        let serviceListLoaded = $q.defer();
 
-        function loadServiceList () {
-            $http.get('<?= base_url('api/fetchServiceList') ?>')
-            .then((res) => {
-                if(res.data.status == 'Error') {
-                    $scope.serviceList = [];
-                    console.log(res.data.message);
-                    console.log(res.data.errors);
-                } else {
-                    $scope.serviceList = res.data;
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-                $scope.serviceList = [];
+        $http.get('<?= base_url('api/fetchServiceList') ?>')
+                .then((res) => {
+                    if(res.data.status == 'Error') {
+                        $scope.serviceList = [];
+                        console.log(res.data.message);
+                        console.log(res.data.errors);
+                    } else {
+                        $scope.serviceList = res.data;
+                    }
+                    serviceListLoaded.resolve();
+                })
+
+        function loadServiceZoneList () {
+            serviceListLoaded.promise.then(() => {
+                $http.get('<?= base_url('api/fetchServiceZoneList') ?>')
+                    .then((res) => {
+                        if(res.data.status == 'Error') {
+                            $scope.serviceZoneList = [];
+                            console.log(res.data.message);
+                            console.log(res.data.errors);
+                        } else {
+                            $scope.serviceZoneList = res.data;
+
+                            $scope.serviceNameList = {};
+                            $scope.serviceList.forEach(function(item) {
+                                $scope.serviceNameList[item.service_id] = item.title;
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        $scope.serviceZoneList = [];
+                    })
             })
         }
 
-         $scope.deleteService = function (id) {
-            if(confirm('Are you sure you want to delete this service')) {
-                $http.post('<?= base_url('service_del') ?>', {
+        
+
+         $scope.deleteServiceZone = function (id) {
+            if(confirm('Are you sure you want to delete this service zone')) {
+                $http.post('<?= base_url('service_zone_del') ?>', {
                     'id': id,
                 })
                 .then((res) => {
                     if(res.data.status == "Success") {
-                        alert('Service deleted.')
-                        loadServiceList();
+                        alert('Service Zone deleted.')
+                        loadServiceZoneList();
                     } else {
-                        alert('Error delete service. See console for details.');
+                        alert('Error delete service zone. See console for details.');
                         console.error(err);
                     }
                 })
@@ -109,6 +128,6 @@
             }
         }
 
-        loadServiceList();
+        loadServiceZoneList();
     });
 </script>

@@ -112,9 +112,19 @@ $routes->get('/service_upsert', 'Service::service_upsert');
 $routes->get('/service_upsert/(:num)', 'Service::service_upsert/$1');
 $routes->post('/service_submit', 'Service::service_submit');
 $routes->post('/service_del', 'Service::service_del');
-
-
 /* End Service */
+
+
+/* Start Service Zone */
+$routes->get('/service_zone_list', 'Service::service_zone_list');
+
+$routes->get('/api/fetchServiceZoneList', 'Service::fetchServiceZoneList');
+
+$routes->get('/service_zone_upsert', 'Service::service_zone_upsert');
+$routes->get('/service_zone_upsert/(:num)', 'Service::service_zone_upsert/$1');
+$routes->post('/service_zone_submit', 'Service::service_zone_submit');
+$routes->post('/service_zone_del', 'Service::service_zone_del');
+/* End Service Zone */
 
 
 /* Start EC */
