@@ -9,7 +9,8 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Home::dashboard');
 
-$routes->get('uploads/(:any)/(:any)', 'FileController::serve/$1/$2');
+$routes->get('uploads/(:any)', 'FileController::serve/$1');
+$routes->get('uploads/(:any)/(:any)/(:any)', 'FileController::serve/$1/$2/$3');
 
 /* Start Company */
 $routes->get('/company_list', 'Company::company_list');
@@ -100,6 +101,20 @@ $routes->get('/promo_code_upsert/(:num)', 'Promo_code::promo_code_upsert/$1');
 $routes->post('/promo_code_submit', 'Promo_code::promo_code_submit');
 $routes->post('/promo_code_del', 'Promo_code::promo_code_del');
 /* End Promo Code */
+
+
+/* Start Service */
+$routes->get('/service_list', 'Service::service_list');
+
+$routes->get('/api/fetchServiceList', 'Service::fetchServiceList');
+
+$routes->get('/service_upsert', 'Service::service_upsert');
+$routes->get('/service_upsert/(:num)', 'Service::service_upsert/$1');
+$routes->post('/service_submit', 'Service::service_submit');
+$routes->post('/service_del', 'Service::service_del');
+
+
+/* End Service */
 
 
 /* Start EC */

@@ -109,6 +109,7 @@ class Product extends BaseController
                     $extension = $image->getClientExtension();
 
                     $imageName = $slug . '_' . date('YmdHis') . '.' . $extension;
+                    dd(WRITEPATH);
                     $image->move(WRITEPATH . 'uploads/product/', $imageName);
                     $image_path = 'uploads/product/' . $imageName;
                 }
@@ -175,7 +176,7 @@ class Product extends BaseController
                     'image_url'     => $image_path,
                     'is_display'    => $is_display,
                     'priority'      => $priority,
-                    'created_date'  => date('Y-m-d H:i:s')
+                    'modified_date'  => date('Y-m-d H:i:s')
                 ]);
 
                 if(!$modified) {
@@ -212,7 +213,7 @@ class Product extends BaseController
                 return $this->response->setStatusCode(400)->setJSON([
                     'status'    => 'Error',
                     'message'   => 'Failed to delete data from database.',
-                    'errors'    => $product_model->error(),
+                    'errors'    => $product_model->errors(),
                 ]);
             }
 

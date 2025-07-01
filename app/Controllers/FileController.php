@@ -6,13 +6,19 @@ use CodeIgniter\Controller;
 
 class FileController extends Controller
 {
-    public function serve($folder = null, $filename = null)
+    public function serve($folder = null, $subfolder = null, $filename = null)
     {
-        if (!$folder || !$filename) {
+        if (!$folder || !$subfolder) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException("Missing file.");
         }
 
-        $path = WRITEPATH . 'uploads/' . $folder . '/' . $filename;
+        // If $filename is null, then $subfolder is actually the filename
+        if ($filename === null) {
+            $filename = $subfolder;
+            $path = WRITEPATH . 'uploads/' . $folder . '/' . $filename;
+        } else {
+            $path = WRITEPATH . 'uploads/' . $folder . '/' . $subfolder . '/' . $filename;
+        }
 
         if (!is_file($path)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException("Image not found.");
