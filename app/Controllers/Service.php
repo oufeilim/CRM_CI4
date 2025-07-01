@@ -206,9 +206,16 @@ class Service extends BaseController
 
     public function fetchServiceZoneList() {
         $service_zone_model = new Service_zone_model();
-        $serviceZoneList = $service_zone_model->where([
-            'is_deleted' => 0,
-        ])->findAll();
+
+        $service_id = $this->request->getGet('service_id');
+
+        $query = $service_zone_model->where(['is_deleted' => 0]);
+
+        if(!empty($service_id)) {
+            $query->where('service_id', $service_id);
+        }
+
+        $serviceZoneList = $query->findAll();
 
         if(!$serviceZoneList) {
             return $this->response->setStatusCode(200)->setJSON([
@@ -350,5 +357,95 @@ class Service extends BaseController
     }
     #endregion
 
-    
+    public function insertBatchServiceRate() {
+        $data = $this->request->getJSON(true);
+         if (empty($data)) {
+            return $this->response->setStatusCode(400)->setJSON([
+                'status' => 'Error',
+                'message' => 'No data received'
+            ]);
+        }
+
+        $rateList = $data['data'];
+        $service_rate_model = new Service_rate_model();
+
+        $errors = [];
+        foreach ($rateList as $index => $row) {
+            // Remap keys
+            $rowData = [
+                'service_id'    => $row['service_id'],
+                'zone_from'     => $row['from_zone'],
+                'zone_to'       => $row['to_zone'],
+                'weight'        => $row['weight'],
+                'price'         => $row['price'],
+                'created_date'  => date('Y-m-d H:i:s')
+            ];
+
+            if (!$service_rate_model->insert($rowData)) {
+                $errors[] = [
+                    'row' => $index + 1,
+                    'error' => $service_rate_model->errors()
+                ];
+            }
+        }
+
+        if (count($errors) > 0) {
+            return $this->response->setStatusCode(400)->setJSON([
+                'status' => 'Error',
+                'message' => 'Some rows failed to insert',
+                'errors' => $errors
+            ]);
+        }
+
+        return $this->response->setStatusCode(200)->setJSON([
+            'status' => 'Success',
+            'message' => 'Done.'
+        ]);
+    }
+
+    public function fetchServiceRateList() {
+        $db = \Config\Database::connect();
+        $service_id = $this->request->getGet(['service_id']);
+
+        $builder = $db->table('service_rate sr');
+        $builder->select("sr.*, 
+            (SELECT title FROM service_zone sz1 WHERE sz1.zone = sr.zone_from AND sz1.service_id = sr.service_id LIMIT 1) AS from_title,
+            (SELECT title FROM service_zone sz2 WHERE sz2.zone = sr.zone_to AND sz2.service_id = sr.service_id LIMIT 1) AS to_title"
+        );
+        $builder->where('sr.is_deleted', 0);
+        
+        if (!empty($service_id)) {
+            $builder->where('sr.service_id', $service_id);
+        }
+
+        $result = $builder->get()->getResult();
+
+        if (!$result) {
+            return $this->response->setStatusCode(200)->setJSON([
+                'status'  => 'Error',
+                'message' => 'No data exist',
+            ]);
+        }
+
+        return $this->response->setStatusCode(200)->setJSON($result);
+    }
+
+    public function updateServiceRates() {
+        $data = $this->request->getJSON()->data ?? [];
+        $service_rate_model = new Service_rate_model();
+
+         foreach ($data as $item) {
+            $service_rate_model->update($item->service_rate_id, [
+                'weight' => $item->weight,
+                'price'  => $item->price,
+                'modified_date' => date('Y-m-d H:i:s')
+            ]);
+        };
+
+        return $this->response->setStatusCode(200)->setJSON([
+            'status' => 'Success',
+            'message' => 'Done.',
+        ]);
+
+    }
 }

@@ -127,6 +127,13 @@ $routes->post('/service_zone_del', 'Service::service_zone_del');
 /* End Service Zone */
 
 
+/* Start Service Rate */
+$routes->post('/api/insertBatchServiceRate', 'Service::insertBatchServiceRate');
+$routes->get('/api/fetchServiceRateList', 'Service::fetchServiceRateList');
+$routes->post('/api/updateServiceRates', 'Service::updateServiceRates');
+/* End Service Rate */
+
+
 /* Start EC */
 $routes->get('/ec', 'Ec::index');
 $routes->get('/ec/category', 'Ec::category');
