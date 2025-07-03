@@ -29,6 +29,7 @@
                                     <th scope="col" style="width: 10%">Category</th>
                                     <th scope="col" style="width: 8%">Stock Quantity</th>
                                     <th scope="col" style="width: 8%">Price</th>
+                                    <th scope="col" style="width: 8%">Weight</th>
                                     <th scope="col" style="width: 5%">Priority</th>
                                     <th scope="col" style="width: 5%">Action</th>
                                 </tr>
@@ -40,6 +41,7 @@
                                     <td>{{ x.category_title }}</td>
                                     <td>{{ x.stock_qty }}</td>
                                     <td>{{ x.price }}</td>
+                                    <td>{{ x.weight + ' kg' }}</td>
                                     <td>{{ x.priority }}</td>
                                     <td>
                                         <div class="btn-toolbar mb-2 mb-md-0">

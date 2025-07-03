@@ -163,4 +163,5 @@ $routes->post('/api/ec/deleteCartItems', 'Ec::deleteCartItems');
 /* Start Checkout */
 $routes->get('/ec/checkout', 'Ec::checkout');
 $routes->get('/ec/checkout_success', 'Ec::checkout_success');
+$routes->post('/api/get_service_price', 'Service::get_service_price');
 /* End Checkout */

@@ -78,6 +78,7 @@ class Product extends BaseController
             $slug           = $this->slugify($name);
             $category_id    = $this->request->getPost('category_id');
             $price          = $this->request->getPost('price');
+            $weight         = $this->request->getPost('weight');
             $stock_qty      = $this->request->getPost('stock_qty');
             $is_display     = $this->request->getPost('is_display');
             $priority       = $this->request->getPost('priority');
@@ -120,6 +121,7 @@ class Product extends BaseController
                     'category_id'   => $category_id,
                     'description'   => $description,
                     'price'         => $price,
+                    'weight'        => $weight,
                     'stock_qty'     => $stock_qty,
                     'image_url'     => $image_path,
                     'is_display'    => $is_display,
@@ -172,6 +174,7 @@ class Product extends BaseController
                     'category_id'   => $category_id,
                     'description'   => $description,
                     'price'         => $price,
+                    'weight'        => $weight,
                     'stock_qty'     => $stock_qty,
                     'image_url'     => $image_path,
                     'is_display'    => $is_display,
@@ -244,6 +247,7 @@ class Product extends BaseController
             $category_id = $parent['category_id'];
             $description = $parent['description'];
             $priority = $parent['priority'];
+            $weight = $parent['weight'];
 
             foreach($variations as $v) {
                 $name = $v['name'];
@@ -257,6 +261,7 @@ class Product extends BaseController
                     'parent_id'     => $product_id,
                     'description'   => $description,
                     'price'         => $v['price'],
+                    'weight'        => $weight,
                     'stock_qty'     => $v['qty'],
                     'image_url'     => '',
                     'is_display'    => 1,

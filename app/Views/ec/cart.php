@@ -19,6 +19,7 @@
                                             <th style="width: 7%"></th>
                                             <th style="width: 40%">Product</th>
                                             <th style="width: 15%">Price</th>
+                                            <th style="width: 10%">Weight</th>
                                             <th style="width: 15%">Quantity</th>
                                         </tr>
                                     </thead>
@@ -27,7 +28,7 @@
                                             <td><button type="button" class="btn btn-danger btn-sm" ng-click="removeProductRow($index)">×</button></td>
                                             <td>
                                                 <a href="#" class="d-flex align-items-center text-decoration-none text-white">
-                                                    <img src="<?= base_url() ?>{{ item.product_image_url }}" class="img-thumbnail me-3" style="width: 100px; height: 100px; object-fit: cover;" alt="product" />
+                                                    <img ng-src="<?= base_url(); ?>{{ item.product_image_url }}" class="img-thumbnail me-3" style="width: 100px; height: 100px; object-fit: cover;" alt="product" />
                                                     <div class="d-flex flex-column">
                                                         <span class="fw-semibold text-start text-break">{{ item.product_name }}</span>
                                                         <small class="text-muted text-break">This is a short description of the product.</small>
@@ -35,6 +36,7 @@
                                                 </a>
                                             </td>
                                             <td>{{ item.product_price }}</td>
+                                            <td>{{ item.product_weight }} kg</td>
                                             <td>
                                                 <div class="input-group justify-content-center">
                                                     <button class="btn btn-outline-secondary btn-sm" ng-click="changeQty(item, -1)" ng-disabled="item.product_qty <= 1">
@@ -74,7 +76,7 @@
                             <div class="card shadow-sm p-3">
                                 <h5 class="card-title">Cart Summary</h5>
                                 <hr>
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <label for="coupon" class="form-label">Promo Code</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="promoCode" id="promoCode" ng-model="promo.code" placeholder="Enter Promo Code">
@@ -82,18 +84,22 @@
                                     </div>
                                     <small class="text-danger" ng-if="couponError">{{ couponError }}</small>
                                     <small class="text-success" ng-if="couponSuccess">{{ couponSuccess }}</small>
-                                </div>
+                                </div> -->
                                 <div class="mb-2 d-flex justify-content-between">
                                     <span>Subtotal:</span>
-                                    <strong>$ {{ subtotal }}</strong>
+                                    <strong>RM {{ subtotal }}</strong>
                                 </div>
                                 <div class="mb-2 d-flex justify-content-between">
                                     <span>Discount:</span>
-                                    <strong>$ {{ discount }}</strong>
+                                    <strong>RM {{ discount }}</strong>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <span>Total Weight:</span>
+                                    <strong>{{ totalWeight }} kg</strong>
                                 </div>
                                 <div class="mb-3 d-flex justify-content-between">
                                     <span>Total:</span>
-                                    <strong>$ {{ final_amount }}</strong>
+                                    <strong>RM {{ final_amount }}</strong>
                                 </div>
                                 <a href="<?= base_url('ec/checkout') ?>" class="btn btn-primary w-100">Checkout</a>
                             </div>
@@ -122,11 +128,13 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
         code: '',
     };
     $scope.discount = (0.00).toFixed(2);
+    $scope.totalWeight = '0.00';
 
     cartService.getCartItems().then(function(items) {
         $scope.cartItems = items;
         calcSubTotal();
         calcFinalAmount();
+        calcTotalWeight();
     });
 
     function refreshCartMeta() {
@@ -134,6 +142,7 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
             $scope.cartItems = items;
             calcSubTotal();
             calcFinalAmount();
+            calcTotalWeight();
 
             const total = cartService.getCartQty();
             $rootScope.$broadcast('cartUpdated', total);  // updates header badge
@@ -157,6 +166,7 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
             calcFinalAmount();
             alert('Sorry, couldn\'t update the quantity. Please try again.');
         });
+        calcTotalWeight();
     };
 
     $scope.inputQtyChanged = _.debounce(function (item) {   // lodash debounce (250 ms)
@@ -167,6 +177,7 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
             .catch(function () { alert('Could not update the quantity'); });
         calcSubTotal();
         calcFinalAmount();
+        calcTotalWeight();
     }, 250);
 
     function calcSubTotal () {
@@ -188,6 +199,14 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
         localStorage.setItem('finalAmount', $scope.final_amount);
     }
 
+    function calcTotalWeight () {
+        const totalWeight = $scope.cartItems.reduce((sum, item) => {
+            return sum + (+item.product_weight * item.product_qty);
+        }, 0).toFixed(2);
+        $scope.totalWeight = totalWeight;
+        localStorage.setItem('totalWeight', totalWeight);
+    }
+
     $scope.removeProductRow = function (index) {
     const item = $scope.cartItems[index];
 
@@ -198,6 +217,7 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
                 $scope.cartItems.splice(index, 1);  // Remove item from view
                 calcSubTotal();
                 calcFinalAmount();
+                calcTotalWeight();
 
                 const totalQty = cartService.getCartQty();
                 $rootScope.$broadcast('cartUpdated', totalQty);
@@ -207,42 +227,42 @@ angular.module('myApp').controller('cartListFormCtrl', function($scope, $rootSco
             });
     };
 
-    $scope.applyPromoCode = function () {
-        $scope.submittedPromoCode = true;
+    // $scope.applyPromoCode = function () {
+    //     $scope.submittedPromoCode = true;
 
-        // Simple validation
-        if (!$scope.promo.code || $scope.promo.code.trim() === '') {
-            $scope.couponError = 'Please enter a valid promo code.';
-            $scope.couponSuccess = '';
-            return;
-        }
+    //     // Simple validation
+    //     if (!$scope.promo.code || $scope.promo.code.trim() === '') {
+    //         $scope.couponError = 'Please enter a valid promo code.';
+    //         $scope.couponSuccess = '';
+    //         return;
+    //     }
 
-        $http.post('<?= base_url('api/fetchPromoCodeOne') ?>', { 'code': $scope.promo.code })
-                .then((res) => {
-                    $scope.couponError = '';
-                    $scope.couponSuccess = 'Added!';
+    //     $http.post('<?= base_url('api/fetchPromoCodeOne') ?>', { 'code': $scope.promo.code })
+    //             .then((res) => {
+    //                 $scope.couponError = '';
+    //                 $scope.couponSuccess = 'Added!';
 
-                    $scope.promo = {
-                        code: res.data.code,
-                        type: res.data.type,
-                        value: res.data.value,
-                        maxcap: res.data.max_cap
-                    }
+    //                 $scope.promo = {
+    //                     code: res.data.code,
+    //                     type: res.data.type,
+    //                     value: res.data.value,
+    //                     maxcap: res.data.max_cap
+    //                 }
 
-                    var result = cartService.checkDiscount($scope.subtotal, $scope.promo.type, $scope.promo.value, $scope.promo.maxcap);
+    //                 var result = cartService.checkDiscount($scope.subtotal, $scope.promo.type, $scope.promo.value, $scope.promo.maxcap);
 
-                    $scope.discount = parseFloat(result.deductAmount).toFixed(2);
-                    $scope.final_amount = result.finalAmount.toFixed(2);
+    //                 $scope.discount = parseFloat(result.deductAmount).toFixed(2);
+    //                 $scope.final_amount = result.finalAmount.toFixed(2);
 
-                    // Store amounts
-                    localStorage.setItem('discountAmount', $scope.discount);
-                    localStorage.setItem('finalAmount', $scope.final_amount);
-                })
-                .catch((err) => {
-                    $scope.couponError = 'Please enter a valid promo code.'
-                    console.log(err);
-                })
-    }
+    //                 // Store amounts
+    //                 localStorage.setItem('discountAmount', $scope.discount);
+    //                 localStorage.setItem('finalAmount', $scope.final_amount);
+    //             })
+    //             .catch((err) => {
+    //                 $scope.couponError = 'Please enter a valid promo code.'
+    //                 console.log(err);
+    //             })
+    // }
 
 });
 </script>

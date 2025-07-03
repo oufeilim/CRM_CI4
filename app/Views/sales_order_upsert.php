@@ -6,24 +6,40 @@
     <form ng-controller="salesOrderFormCtrl" name="salesOrderForm" ng-submit="submitForm()" novalidate>
         <input ng-model="mode" type="hidden" name="mode">
         <input ng-model="id" type="hidden" name="id">
+
+        <div class="form-group my-2">
+            <label class="form-label" for="order_date">Order date</label>
+            <input ng-model="order_date" name="order_date" id="order_date" type="text" class="form-control">
+        </div>
         
         <div class="row">
-            <div class="col-3 form-group my-2">
-                <label class="form-label" for="order_date">Order date</label>
-                <input ng-model="order_date" name="order_date" id="order_date" type="text" class="form-control">
-            </div>
-
-            <div class="col-3 form-group my-2">
+            <div class="col-2 form-group my-2">
                 <label class="form-label" for="total_amount">Total amount</label>
                 <input ng-model="total_amount" name="total_amount" id="total_amount" type="text" class="form-control" price-input disabled required>
             </div>
 
-            <div class="col-3 form-group my-2">
+            <div class="col-2 form-group my-2">
                 <label class="form-label" for="discount_amount">Discount amount</label>
                 <input ng-model="discount_amount" name="discount_amount" id="discount_amount" type="text" class="form-control" price-input readonly required>
             </div>
 
-            <div class="col-3 form-group my-2">
+            <div class="col-2 form-group my-2">
+                <label class="form-label" for="total_weight">Total Weight</label>
+                <input ng-model="total_weight" name="total_weight" id="total_weight" type="text" class="form-control" readonly disabled required>
+            </div>
+
+            <div class="col-2 form-group my-2">
+                <label class="form-label" for="service">Service</label>
+                <select class="form-control" name="service" id="service" ng-model="service" ng-options="service.service_id as service.title for service in serviceList">
+                </select>
+            </div>
+
+            <div class="col-2 form-group my-2">
+                <label class="form-label" for="shipping_fee">Shipping Fee</label>
+                <input ng-model="shipping_fee" name="shipping_fee" id="shipping_fee" type="text" class="form-control" price-input required>
+            </div>
+
+            <div class="col-2 form-group my-2">
                 <label class="form-label" for="final_amount">Final amount</label>
                 <input ng-model="final_amount" name="final_amount" id="final_amount" type="text" class="form-control" price-input disabled required>
             </div>
@@ -140,6 +156,8 @@
                         <th style="width: 30%;">Product</th>
                         <th style="width: 10%;">Quantity</th>
                         <th style="width: 10%;">Price</th>
+                        <th style="width: 10%;">Weight</th>
+                        <th style="width: 10%;">Total Weight</th>
                         <th style="width: 10%;">Total</th>
                         <th style="width: 10%;" class="text-center align-middle"><button type="button" class="btn btn-primary btn-sm" ng-click="addProductRow()">+</button></th>
                     </tr>
@@ -154,6 +172,8 @@
                         </td>
                         <td><input type="number" class="form-control" ng-model="item.product_qty" ng-change="updateItemTotal(item)" min="1"></td>
                         <td>{{ item.product_price | number:2 }}</td>
+                        <td>{{ item.product_weight | number:2 }}</td>
+                        <td>{{ item.product_qty * item.product_weight | number:2 }}</td>
                         <td>{{ item.total | number:2 }}</td>
                         <td class="text-center align-middle"><button type="button" class="btn btn-danger btn-sm" ng-click="removeProductRow($index)">×</button></td>
                     </tr>
@@ -242,6 +262,7 @@
         $scope.userList = [];
         $scope.productItems = [];
         $scope.productList = [];
+        $scope.serviceList = [];
 
         // #region Fetch data for edit
         $scope.user = null;
@@ -254,12 +275,15 @@
         $scope.order_date           = '<?= esc(isset($salesOrderData) ? $salesOrderData['order_date'] : '') ?>';
         $scope.total_amount         = '<?= esc(isset($salesOrderData) ? $salesOrderData['total_amount'] : '') ?>';
         $scope.discount_amount      = '<?= esc(isset($salesOrderData) ? $salesOrderData['discount_amount'] : '') ?>';
+        $scope.total_weight         = '<?= esc(isset($salesOrderData) ? $salesOrderData['total_weight'] : '') ?>';
+        $scope.service              = '<?= esc(isset($salesOrderData) ? $salesOrderData['service_id'] : 0) ?>';
+        $scope.shipping_fee         = '<?= esc(isset($salesOrderData) ? $salesOrderData['shipping_fee'] : '') ?>';
         $scope.final_amount         = '<?= esc(isset($salesOrderData) ? $salesOrderData['final_amount'] : '') ?>';
-        $scope.order_status         = '<?= esc(isset($salesOrderData) ? $salesOrderData['order_status'] : '') ?>';
+        $scope.order_status         = '<?= esc(isset($salesOrderData) ? $salesOrderData['order_status'] : 0) ?>';
         $scope.user_id              = '<?= esc(isset($salesOrderData) ? $salesOrderData['user_id'] : '') ?>';
-        $scope.payment_status       = '<?= esc(isset($salesOrderData) ? $salesOrderData['payment_status'] : '') ?>';
+        $scope.payment_status       = '<?= esc(isset($salesOrderData) ? $salesOrderData['payment_status'] : 0) ?>';
         $scope.payment_date         = '<?= esc(isset($salesOrderData) ? $salesOrderData['payment_date'] : '') ?>';
-        $scope.payment_method       = '<?= esc(isset($salesOrderData) ? $salesOrderData['payment_method'] : '') ?>';
+        $scope.payment_method       = '<?= esc(isset($salesOrderData) ? $salesOrderData['payment_method'] : 0) ?>';
         $scope.admin_remark         = '<?= esc(isset($salesOrderData) ? $salesOrderData['admin_remark'] : '') ?>';
 
         $scope.sales_order_detail   = <?= json_encode($salesOrderDetailData ?? []) ?>;
@@ -275,6 +299,7 @@
                     /* numbers must be numbers or maths will give NaN */
                     product_qty:   +row.qty,
                     product_price: +row.unit_price,
+                    product_weight:+row.weight,
                     total:         +row.total_amount,
 
                     /* placeholder for full catalogue object (added later) */
@@ -345,11 +370,25 @@
         
         // #endregion
 
+        // #region Retrive Service
+        $http.get('<?= base_url('api/fetchServiceList') ?>')
+                .then((res) => {
+                    if(res.data.status == 'Error') {
+                        console.log(res.data.errors);
+                        $scope.serviceList = [];
+                        $scope.serviceList.unshift({service_id: '0', title: 'No Shipping'});
+                    } else {
+                        $scope.serviceList = res.data;
+                        $scope.serviceList.unshift({service_id: '0', title: 'No Shipping'});
+                    }
+                })
+
         // #region Sales Order Detail
         // Get Product List
         $http.get('<?= base_url('api/fetchProductList') ?>')
                 .then((res) => {
                     $scope.productList = res.data;
+                    console.log($scope.productList);
 
                     $scope.productItems.forEach(function (item) {
                     if (item.product_id) {
@@ -373,6 +412,7 @@
                 product_name: '',
                 product_image_url: '',
                 product_qty: 1,
+                product_weight: 1,
                 product_price: 0.00,
                 total: 0.00
             });
@@ -407,21 +447,33 @@
                 item.product_image_url = selectedProduct.image_url;
                 item.product_price = parseFloat(selectedProduct.price).toFixed(2);;
                 item.product_qty = 1;
+                item.product_weight = selectedProduct.weight;
                 $scope.updateItemTotal(item);
             }
-        }   
+        }
+        // #endregion
 
-        // #region Sales order detail product ( total - discount = final)
+        // #region Sales order detail product
         $scope.updateOrderTotal = function () {
             let total = 0;
+            let totalWeight = 0;
+
             $scope.productItems.forEach(item => {
+                const qty = parseFloat(item.product_qty) || 0;
+                const price = parseFloat(item.product_price) || 0;
+                const weight = parseFloat(item.product_weight) || 0;
+
+                item.total = qty * price;
                 total += item.total;
-            })
+                totalWeight += qty * weight;
+            });
 
             $scope.total_amount = total.toFixed(2);
+            $scope.total_weight = totalWeight.toFixed(2);
             
             const discount = parseFloat($scope.discount_amount);
-            const final = total - discount;
+            const shipping = parseFloat($scope.shipping_fee);
+            const final = (total - discount) + shipping;
 
             $scope.final_amount = final.toFixed(2);
         }
@@ -429,8 +481,10 @@
         $scope.$watch('discount_amount', function () {
             $scope.updateOrderTotal();
         });
+        $scope.$watch('shipping_fee', function () {
+            $scope.updateOrderTotal();
+        });
         // #endregion
-
 
         // #region Submit Form
         $scope.submitForm = function () {
@@ -445,6 +499,9 @@
                     'order_date'        : $scope.order_date,
                     'total_amount'      : $scope.total_amount,
                     'discount_amount'   : $scope.discount_amount,
+                    'total_weight'      : $scope.total_weight,
+                    'service_id'        : $scope.service,
+                    'shipping_fee'      : $scope.shipping_fee,
                     'final_amount'      : $scope.final_amount,
                     'user_id'           : $scope.user,
                     'user_name'         : $scope.user_name,

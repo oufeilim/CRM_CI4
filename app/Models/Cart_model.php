@@ -16,6 +16,7 @@ class Cart_model extends Model {
         'product_id',
         'product_name',
         'product_qty',
+        'product_weight',
         'product_price',
         'product_image_url',
     ];

@@ -16,7 +16,7 @@
         </div>
 
         <div class="row">
-            <div class="col-4 form-group my-2">
+            <div class="col-3 form-group my-2">
                 <label class="form-label" for="prod_category">Category</label>
                 <select class="form-control" ng-model="prod_category" name="prod_category" id="prod_category" ng-options="category.category_id as category.title for category in categoryList" required>
                     <option value="">-- Select Category --</option>
@@ -27,7 +27,7 @@
             </div>
 
 
-            <div class="col-4 form-group my-2">
+            <div class="col-3 form-group my-2">
                 <label class="form-label" for="price">Price</label>
                 <input ng-model="price" name="price" id="price" type="text" class="form-control" required price-input readonly>
                 <div ng-messages="productForm.price.$error" ng-if="submitted" class="text-danger">
@@ -35,11 +35,19 @@
                 </div>
             </div>
 
-            <div class="col-4 form-group my-2">
+            <div class="col-3 form-group my-2">
                 <label class="form-label" for="stock_qty">Stock Quantity</label>
                 <input ng-model="stock_qty" name="stock_qty" id="stock_qty" type="text" class="form-control" required>
                 <div ng-messages="productForm.stock_qty.$error" ng-if="submitted" class="text-danger">
                     <div ng-message="required">Stock Quantity is required.</div>
+                </div>
+            </div>
+
+            <div class="col-3 form-group my-2">
+                <label class="form-label" for="weight">Weight (kg)</label>
+                <input ng-model="weight" name="weight" id="weight" type="text" class="form-control" required>
+                <div ng-messages="productForm.weight.$error" ng-if="submitted" class="text-danger">
+                    <div ng-message="required">Weight is required.</div>
                 </div>
             </div>
         </div>
@@ -189,6 +197,7 @@
         $scope.prod_name        = '<?= esc(isset($productData) ? $productData['name'] : '') ?>';
         
         $scope.price            = '<?= esc(isset($productData) ? $productData['price'] : '') ?>';
+        $scope.weight           = '<?= esc(isset($productData) ? $productData['weight'] : '') ?>';
         $scope.stock_qty        = '<?= esc(isset($productData) ? $productData['stock_qty'] : '') ?>';
 
         $scope.is_display       = '<?= esc(isset($productData) ? $productData['is_display'] : '') ?>';
@@ -216,6 +225,7 @@
                     formData.append('prod_name', $scope.prod_name);
                     formData.append('category_id', $scope.prod_category);
                     formData.append('price', $scope.price);
+                    formData.append('weight', $scope.weight);
                     formData.append('stock_qty', $scope.stock_qty);
                     formData.append('is_display', $scope.is_display);
                     formData.append('priority', $scope.priority);

@@ -65,6 +65,7 @@ class Ec extends BaseController
                                     'category.slug'=> $slug,
                                     'product.is_display' => 1,
                                     'product.is_deleted' => 0,
+                                    'product.parent_id' => 0,
                                     ])
                                 ->orderBy('product.priority','asc')
                                 ->findAll();
@@ -137,6 +138,7 @@ class Ec extends BaseController
             $product_id         = $formData->product_id;
             $product_name       = $formData->product_name;
             $product_qty        = $formData->product_qty;
+            $product_weight     = $formData->product_weight;
             $product_price      = $formData->product_price;
             $product_image_url  = $formData->product_image_url;
 
@@ -156,6 +158,7 @@ class Ec extends BaseController
                     'product_id'=> $product_id,
                     'product_name'=> $product_name,
                     'product_qty'=> $product_qty,
+                    'product_weight' => $product_weight,
                     'product_price'=> $product_price,
                     'product_image_url'=> $product_image_url
                 ]);
@@ -181,6 +184,7 @@ class Ec extends BaseController
                     'modified_date' => date('Y-m-d H:i:s'),
                     'product_name'=> $product_name,
                     'product_qty'=> $updated_qty,
+                    'product_weight' => $product_weight,
                     'product_price'=> $product_price,
                     'product_image_url'=> $product_image_url
                 ]);
@@ -202,7 +206,7 @@ class Ec extends BaseController
         } catch (Exception $e) {
             return $this->response->setStatusCode(500)->setJSON([
                 'status'    => 'Error',
-                'message'   => 'Error occurred while insert data.',
+                'message'   => 'Error occurred while insert data.: ' . $e->getMessage(),
             ]);
         }
     }

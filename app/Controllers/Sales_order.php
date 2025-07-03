@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Sales_order_model;
 use App\Models\Sales_order_detail_model;
 
+use App\Libraries\ShippingService;
 use App\Libraries\Mpdf;
 
 use Exception;
@@ -86,12 +87,16 @@ class Sales_order extends BaseController
             $order_date         = $formData->order_date;
             $total_amount       = $formData->total_amount;
             $discount_amount    = $formData->discount_amount;
+            $total_weight       = $formData->total_weight;
+            $service_id         = $formData->service_id;
+            $shipping_fee       = $formData->shipping_fee;
             $final_amount       = $formData->final_amount;
             $user_id            = $formData->user_id;
             $user_name          = $formData->user_name;
             $user_email         = $formData->user_email;
             $user_contact       = $formData->user_contact;
             $user_address       = $formData->user_address;
+            $company_addr       = $formData->company_addr ?? '';
             
             if($mode != "consumerAdd") {
                 $order_status       = $formData->order_status;
@@ -112,6 +117,30 @@ class Sales_order extends BaseController
         
             $sales_order_detail = $formData->sales_order_detail;
 
+            // Another checking for the shipping fee
+            if($service_id != '0' && $mode == 'consumerAdd') {
+                $arr = [];
+
+                $arr['weight'] = ceil($total_weight);
+                $arr['company_addr'] = $company_addr;
+                $arr['shipping_addr'] = $user_address;
+                $arr['service_id'] = $service_id;
+
+                $checkFinalAmount = 0;
+                $service_rate_price = ShippingService::checkServiceRate($arr);
+
+                $checkFinalAmount = ($total_amount - $discount_amount) + $service_rate_price;
+
+                if(number_format($checkFinalAmount, 2, '.' , '') != number_format($final_amount, 2, '.', '')) {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'status'    => 'Error',
+                        'message'   => 'Wrong amount: '.$checkFinalAmount.' -> '.$final_amount,
+                    ]);
+                }
+
+            }
+
+
             if($mode == "Add" || $mode == "consumerAdd") {
                 // Insert sales order to get sales_order_id
                 $sales_order_model = new Sales_order_model();
@@ -125,6 +154,9 @@ class Sales_order extends BaseController
                     'order_date'        => $order_date,
                     'total_amount'      => number_format($total_amount, 2, '.' , ''),
                     'discount_amount'   => number_format($discount_amount, 2, '.' , ''),
+                    'total_weight'      => number_format($total_weight, 2, '.' , ''),
+                    'service_id'        => $service_id,
+                    'shipping_fee'      => number_format($shipping_fee, 2, '.' , ''),
                     'final_amount'      => number_format($final_amount, 2, '.' , ''),
                     'user_id'           => $user_id,
                     'user_name'         => $user_name,
@@ -156,6 +188,7 @@ class Sales_order extends BaseController
                         'product_id'        => $product_item->product_id,
                         'unit_price'        => number_format($product_item->product_price, 2, '.' , ''),
                         'qty'               => $product_item->product_qty,
+                        'weight'            => $product_item->product_weight,
                         'total_amount'      => number_format($product_item->total, 2, '.' , ''),
                         'product_name'      => $product_item->product_name,
                         'product_image_url' => $product_item->product_image_url
@@ -188,6 +221,9 @@ class Sales_order extends BaseController
                     'order_date'        => $order_date,
                     'total_amount'      => number_format($total_amount, 2, '.' , ''),
                     'discount_amount'   => number_format($discount_amount, 2, '.' , ''),
+                    'total_weight'      => number_format($total_weight, 2, '.' , ''),
+                    'service_id'        => $service_id,
+                    'shipping_fee'      => number_format($shipping_fee, 2, '.' , ''),
                     'final_amount'      => number_format($final_amount, 2, '.' , ''),
                     'order_status'      => $order_status,
                     'user_id'           => $user_id,
@@ -270,6 +306,7 @@ class Sales_order extends BaseController
                                 ->set([
                                     'unit_price'      => number_format($item->product_price, 2, '.', ''),
                                     'qty'             => $item->product_qty,
+                                    'weight'          => $item->product_weight,
                                     'total_amount'    => number_format($item->total, 2, '.', ''),
                                     'product_name'    => $item->product_name,
                                     'product_image_url'   => $item->product_image_url,
@@ -306,6 +343,7 @@ class Sales_order extends BaseController
                                 ->set([
                                     'unit_price'     => $new_price,
                                     'qty'            => $new_qty,
+                                    'weight'         => $item->product_weight,
                                     'total_amount'   => number_format($item->total, 2, '.', ''),
                                     'product_name'   => $item->product_name,
                                     'product_image_url'  => $item->product_image_url,
@@ -334,6 +372,7 @@ class Sales_order extends BaseController
                             'product_id'      => $pid,
                             'unit_price'      => number_format($item->product_price, 2, '.', ''),
                             'qty'             => $item->product_qty,
+                            'weight'          => $item->product_weight,
                             'total_amount'    => number_format($item->total, 2, '.', ''),
                             'product_name'    => $item->product_name,
                             'product_image_url'   => $item->product_image_url,

@@ -75,6 +75,30 @@
                             <small class="text-success" ng-if="couponSuccess">{{ couponSuccess }}</small>
                         </div>
                     </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-6 form-group my-2">
+                            <div class="form-check">
+                                <input class="form-check-input" ng-model="needShipping" ng-change="checkShipping()" type="checkbox" value="" id="needShipping">
+                                <label class="form-check-label" for="needShipping">
+                                    I want shipping
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="needShipping == true">
+                        <div class="form-group my-2">
+                            <label class="form-label" for="service">Service</label>
+                            <select class="form-control" ng-model="formData.service" name="service" id="service" ng-options="service.service_id as service.title for service in serviceList" required>
+                            </select>
+
+                            <button type="button" class="btn btn-primary mt-3 w-100" ng-click="checkShippingRate()" ng-disabled="formData.service == null || formData.service == 0">Check shipping</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -88,7 +112,7 @@
                 <hr>
 
                 <div class="d-flex mb-3" ng-repeat="item in cartList">
-                    <img src="<?= base_url() ?>{{ item.product_image_url }}" class="img-thumbnail object-fit-cover me-3" style="width: 80px; height: 80px;">
+                    <img ng-src="<?= base_url() ?>{{ item.product_image_url }}" class="img-thumbnail object-fit-cover me-3" style="width: 80px; height: 80px;">
                     <div>
                         <h6 class="mb-1">{{ item.product_name }}</h6>
                         <p class="mb-0 text-muted">Quantity: {{ item.product_qty }}</p>
@@ -114,15 +138,25 @@
                 <hr>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Subtotal</span>
-                    <strong>$ {{ subTotal }}</strong>
+                    <strong>RM {{ subTotal }}</strong>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Discount</span>
-                    <strong>-$ {{ discount }}</strong>
+                    <strong>-RM {{ discount }}</strong>
                 </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Total Weight</span>
+                    <strong>{{ totalWeight }} kg</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2" ng-if="needShipping == true">
+                    <span>Shipping Fee</span>
+                    <strong>RM {{ shippingFee }}</strong>
+                </div>
+                <hr>
                 <div class="d-flex justify-content-between mb-3">
                     <span>Total</span>
-                    <strong>$ {{ finalAmount }}</strong>
+                    <strong>RM {{ finalAmount }}</strong>
                 </div>
                 <button type="submit" class="btn btn-success w-100">Place Order</button>
                 </div>
@@ -135,6 +169,16 @@
 <script>
 angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootScope, $http, $window, cartService) {
 
+    if (performance.getEntriesByType("navigation")[0]?.type === "reload") {
+        localStorage.removeItem('promoInfo');
+        localStorage.removeItem('tempFinalAmount');
+        localStorage.setItem('discountAmount', 0.00.toFixed(2));
+        // localStorage.setItem('finalAmount', $scope.subTotal);
+    }
+
+    $scope.formData = {
+        service: null
+    };
     $scope.userData         = [];
     $scope.cartList         = [];
     $scope.subTotal         = 0;
@@ -142,15 +186,13 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
     $scope.promo = {
         code: '',
     }
-
-    const promoInfo = JSON.parse(localStorage.getItem('promoInfo'));
-    $scope.discount = parseFloat(localStorage.getItem('discountAmount')).toFixed(2) || 0;
-    $scope.finalAmount = parseFloat(localStorage.getItem('finalAmount')).toFixed(2) || 0;
-
-    
-    if (promoInfo) {
-        $scope.couponCode = promoInfo.code;
-    }
+    $scope.shippingFee      = parseFloat(0.00).toFixed(2);
+    $scope.serviceList      = [];
+    const storedDiscount = parseFloat(localStorage.getItem('discountAmount'));
+    $scope.discount = isNaN(storedDiscount) ? 0 : storedDiscount.toFixed(2);
+    const storedFinalAmount = parseFloat(localStorage.getItem('finalAmount'));
+    $scope.finalAmount = isNaN(storedFinalAmount) ? 0 : storedFinalAmount.toFixed(2);
+    $scope.totalWeight = localStorage.getItem('totalWeight');
 
     // #region Assign value
     $http.post('<?= base_url('/api/fetchUserOne') ?>', {user_id: 3})
@@ -199,9 +241,51 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
 
         $scope.subTotal = subtotal.toFixed(2);
         $scope.finalAmount = ($scope.subTotal - ($scope.discount || 0)).toFixed(2);
+        localStorage.setItem('finalAmount', $scope.finalAmount);
     };
     // #endregion
 
+    const promoInfo = JSON.parse(localStorage.getItem('promoInfo'));
+    if (promoInfo && promoInfo.code) {
+        $scope.promo = promoInfo;
+        const result = cartService.checkDiscount($scope.subTotal, promoInfo.type, promoInfo.value, promoInfo.maxcap);
+
+        $scope.discount = parseFloat(result.deductAmount).toFixed(2);
+        $scope.finalAmount = parseFloat(result.finalAmount).toFixed(2);
+    }
+
+    $scope.checkShipping = function () {
+        if($scope.needShipping) {
+            localStorage.setItem('tempFinalAmount', $scope.finalAmount);
+
+            $http.get('<?= base_url('api/fetchServiceList?shipping_addr=') ?>'+$scope.user_addr)
+                    .then((res) => {
+                        if(res.data.status == 'Error') {
+                            console.log(res.data.errors);
+                        } else {
+                            $scope.serviceList = res.data;
+                            console.log('Service List Structure:', $scope.serviceList); // Add this
+                            // Check if each service has service_id property
+                            $scope.serviceList.forEach(service => {
+                                console.log('Service:', service.service_id, service.title);
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        $scope.serviceList = [];
+                        console.log(err);
+                    })
+            
+        } else {
+            $scope.shippingFee      = parseFloat(0.00).toFixed(2);
+            $scope.formData.service = '';
+            $scope.serviceList      = [];
+            $scope.finalAmount = localStorage.getItem('tempFinalAmount');
+            localStorage.setItem('finalAmount', $scope.finalAmount);
+            localStorage.removeItem('tempFinalAmount');
+        }
+    }
+    
     // #region Insert Sales Order
     $scope.submitForm = function () {
         if(confirm('Do you really want to place your order?')) {
@@ -216,9 +300,13 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
                 'mode'              : 'consumerAdd',
                 'id'                : '',
                 'serial_number'     : '',
+                'company_addr'      : 'Johor',
                 'order_date'        : formatted,
                 'total_amount'      : $scope.subTotal,
                 'discount_amount'   : $scope.discount,
+                'service_id'        : $scope.needShipping == true ? $scope.formData.service : 0,
+                'total_weight'      : $scope.totalWeight,
+                'shipping_fee'      : $scope.shippingFee,
                 'final_amount'      : $scope.finalAmount,
                 'user_id'           : $scope.userData.user_id,
                 'user_name'         : $scope.user_name,
@@ -230,6 +318,8 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
                 'sales_order_detail': $scope.cartList,
             }
 
+            console.log(postData);
+
             $http.post('<?= base_url('sales_order_submit') ?>', postData)
                     .then((res) => {
                         if(res.data.status == "Success") {
@@ -238,6 +328,7 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
                             localStorage.removeItem('promoInfo');
                             localStorage.removeItem('discountAmount');
                             localStorage.removeItem('finalAmount');
+                            localStorage.removeItem('tempFinalAmount');
                             const cartIds = $scope.cartList.map(item => item.cart_id);
 
                             cartService.bulkDeleteCartItems(cartIds)
@@ -286,23 +377,49 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
                         maxcap: res.data.max_cap
                     }
 
-                    var result = cartService.checkDiscount($scope.subtotal, $scope.promo.type, $scope.promo.value, $scope.promo.maxcap);
+                    var result = cartService.checkDiscount($scope.subTotal, $scope.promo.type, $scope.promo.value, $scope.promo.maxcap);
 
                     $scope.discount = parseFloat(result.deductAmount).toFixed(2);
-                    $scope.final_amount = result.finalAmount.toFixed(2);
+                    $scope.finalAmount = result.finalAmount.toFixed(2);
 
                     // Store amounts
                     localStorage.setItem('discountAmount', $scope.discount);
-                    localStorage.setItem('finalAmount', $scope.final_amount);
+                    localStorage.setItem('finalAmount', $scope.finalAmount);
+                    localStorage.setItem('promoInfo', JSON.stringify($scope.promo));
                 })
                 .catch((err) => {
                     $scope.couponError = 'Please enter a valid promo code.'
+                    $scope.couponSuccess = '';
                     console.log(err);
                 })
         } else {
             $scope.couponError = 'Discount has already applied.';
+            $scope.couponSuccess = '';
         }
     }
 
+    $scope.checkShippingRate = function () {
+        if($scope.shippingFee != '0.00') return;
+
+        const data = {
+            'company_addr'  : 'Johor',
+            'shipping_addr' : $scope.user_addr,
+            'service_id'    : $scope.formData.service,
+            'weight'        : $scope.totalWeight,
+        }
+
+        $http.post('<?= base_url('api/get_service_price') ?>', data)
+                .then((res) => {
+                    if(res.data.status == 'Error') {
+                        console.log(res.data);
+                    } else {
+                        $scope.shippingFee = res.data;
+                        $scope.finalAmount = +$scope.shippingFee + +$scope.finalAmount;
+                        localStorage.setItem('finalAmount', $scope.finalAmount);
+                        $scope.shippingFee = $scope.shippingFee.toFixed(2);
+                        $scope.finalAmount = $scope.finalAmount.toFixed(2);
+                    }
+                })
+    }
 });
 </script>

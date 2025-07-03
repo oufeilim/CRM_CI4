@@ -17,6 +17,7 @@ class Product_model extends Model {
         'parent_id',
         'description',
         'price',
+        'weight',
         'stock_qty',
         'image_url',
         'is_display',

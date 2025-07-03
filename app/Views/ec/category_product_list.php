@@ -31,7 +31,8 @@
                                         <h5>{{ product.name }}</h5>
                                         <p class="card-text">{{ product.description }}</p>
 
-                                        <div class="d-flex justify-content-end align-items-center">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-body-secondary">{{ product.weight }} kg/per</small>
                                             <small class="text-body-secondary">{{ product.price }}</small>
                                         </div>
                                     </div>

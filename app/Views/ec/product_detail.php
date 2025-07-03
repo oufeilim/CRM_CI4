@@ -27,7 +27,8 @@
                             <h2>{{ productData.name }}</h2>
                             <p class="text-muted">Category: <a class="text-decoration-none text-muted" href="<?= base_url('ec/category_product_list/') ?>{{ productData.category_id + '/' + productData.category_slug }}">{{ productData.category_title }}</a></p>
                             <p>{{ productData.description }}</p>
-                            <p><strong>Price:</strong> {{ productData.price }} each</p>
+                            <p><strong>Price:</strong>RM {{ productData.price }} each</p>
+                            <p><strong>Weight:</strong> {{ productData.weight }} kg</p>
                             <p><strong>Stock Available:</strong> {{ productData.stock_qty }}</p>
                             <div class="d-flex flex-column gap-2 mt-3" style="max-width: 200px;">
                                 <!-- Quantity Selector -->
@@ -85,6 +86,7 @@
                             product_id          : $scope.productData.product_id,
                             product_name        : $scope.productData.name,
                             product_qty         : $scope.quantity,
+                            product_weight      : $scope.productData.weight,
                             product_price       : $scope.productData.price,
                             product_image_url   : $scope.productData.image_url,
                         };

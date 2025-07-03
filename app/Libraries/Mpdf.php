@@ -96,6 +96,10 @@ class Mpdf {
                     <td class="amount">-$ '.$so['discount_amount'].'</td>
                 </tr>
                 <tr>
+                    <td class="label">Shipping Fee:</td>
+                    <td class="amount">$ '.$so['shipping_fee'].'</td>
+                </tr>
+                <tr>
                     <td class="label">Total:</td>
                     <td class="amount">$ '.$so['final_amount'].'</td>
                 </tr>
@@ -123,6 +127,7 @@ class Mpdf {
                     <td>'.$v['product_name'].'</td>
                     <td>$ '.$v['unit_price'].'</td>
                     <td>'.$v['qty'].'</td>
+                    <td>'.$v['weight'].'</td>
                     <td>$ '.$v['total_amount'].'</td>
                 </tr>
                 ';
@@ -199,6 +204,7 @@ class Mpdf {
                             <th style="width:50%">Item</th>
                             <th style="width:15%">Unit Price</th>
                             <th style="width:10%">Qty</th>
+                            <th style="width:10%">Weight</th>
                             <th style="width:25%">Total</th>
                         </tr>
                     </thead>

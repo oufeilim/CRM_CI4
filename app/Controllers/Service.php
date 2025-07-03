@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Libraries\ShippingService;
+
 use App\Models\Service_model;
 use App\Models\Service_zone_model;
 use App\Models\Service_rate_model;
@@ -19,7 +21,63 @@ class Service extends BaseController
     }
 
     public function fetchServiceList() {
+
+        $shipping_addr = strtolower($this->request->getGet('shipping_addr') ?? '');
+        
         $service_model = new Service_model();
+        
+        if($shipping_addr != '') {
+
+            $matchedZones  = [];
+
+            // service zone list
+            $service_zone_model = new Service_zone_model();
+            $serviceZoneList = $service_zone_model->where([
+                'is_deleted' => 0,
+            ])->findAll();
+
+            if(!$serviceZoneList) {
+                return $this->response->setStatusCode(404)->setJSON([
+                    'status'    => 'Error',
+                    'message'   => $service_zone_model->errors(),
+                ]);
+            }
+
+            // loop it for zone
+            foreach( $serviceZoneList as $serviceZone ) {
+                if(strpos($shipping_addr, strtolower($serviceZone['title'])) !== false) {
+                    $matchedZones[] = $serviceZone['zone'];
+                }
+            }
+
+            if (empty($matchedZones)) {
+                return $this->response->setStatusCode(200)->setJSON([
+                    'status'  => 'Success',
+                    'message' => 'No matched services found for given address.',
+                    'data'    => []
+                ]);
+            }
+
+            // Get services that support any of the matched zone_to (in rate)
+            $service_rate_model = new Service_rate_model();
+            $validRates = $service_rate_model->select('service_id')
+                ->where(['is_deleted' => 0])
+                ->whereIn('zone_to', array_unique($matchedZones))
+                ->groupBy('service_id')
+                ->findAll();
+
+            if (empty($validRates)) {
+                return $this->response->setStatusCode(200)->setJSON([
+                    'status'  => 'Success',
+                    'message' => 'No rates available for given address.',
+                    'data'    => []
+                ]);
+            }
+
+            $validServiceIds = array_column($validRates, 'service_id');
+            $service_model->whereIn('service_id', $validServiceIds);
+        }
+
         $serviceList = $service_model->where([
             'is_deleted' => 0,
         ])->findAll();
@@ -418,7 +476,7 @@ class Service extends BaseController
             $builder->where('sr.service_id', $service_id);
         }
 
-        $result = $builder->get()->getResult();
+        $result = $builder->orderBy('zone_from', 'asc')->orderBy('weight', 'asc')->get()->getResult();
 
         if (!$result) {
             return $this->response->setStatusCode(200)->setJSON([
@@ -447,5 +505,19 @@ class Service extends BaseController
             'message' => 'Done.',
         ]);
 
+    }
+
+    public function get_service_price() {
+        $data = $this->request->getJSON(true);
+        $arr = [];
+
+        $arr['weight'] = ceil($data['weight']);
+        $arr['company_addr'] = $data['company_addr'];
+        $arr['shipping_addr'] = $data['shipping_addr'];
+        $arr['service_id'] = $data['service_id'];
+
+        $shipping_fee = ShippingService::checkServiceRate($arr);
+
+        return $this->response->setStatusCode(200)->setJSON($shipping_fee);
     }
 }

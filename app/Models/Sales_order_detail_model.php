@@ -16,6 +16,7 @@ class Sales_order_detail_model extends Model {
         'product_id',
         'unit_price',
         'qty',
+        'weight',
         'total_amount',
         'product_name',
         'product_image_url'
