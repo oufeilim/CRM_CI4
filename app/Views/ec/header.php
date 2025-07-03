@@ -253,7 +253,7 @@
             </div>
             <div class="navbar navbar-dark bg-dark shadow-sm">
                 <div class="container d-flex justify-content-between align-items-center">
-                    <a href="<?= base_url('ec') ?>" class="navbar-brand d-flex align-items-center">
+                    <a href="<?= base_url('ec/category') ?>" class="navbar-brand d-flex align-items-center">
                         
                         <strong>E-commerce</strong>
                     </a>

@@ -120,6 +120,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 10%;">#</th>
+                                                    <th>Type</th>
                                                     <th>Weight</th>
                                                     <th>Price</th>
                                                     <th style="width: 10%;" class="text-center align-middle"><button class="btn btn-success btn-sm" type="button" ng-click="addRow()">+</button></th>
@@ -128,6 +129,12 @@
                                             <tbody>
                                                 <tr ng-repeat="row in rateRows track by $index">
                                                     <td>{{$index + 1}}</td>
+                                                    <td>
+                                                        <select class="form-select" ng-model="row.type">
+                                                            <option value="0">Normal</option>
+                                                            <option value="1">Multiplier</option>
+                                                        </select>
+                                                    </td>
                                                     <td><input type="text" ng-model="row.weight" class="form-control" /></td>
                                                     <td><input type="text" ng-model="row.price" class="form-control" /></td>
                                                     <td class="text-center">
@@ -162,6 +169,7 @@
                                                 <tr>
                                                     <th>Zone From</th>
                                                     <th>Zone To</th>
+                                                    <th>Type</th>
                                                     <th>Weight (KG)</th>
                                                     <th>Price</th>
                                                 </tr>
@@ -170,6 +178,12 @@
                                                 <tr ng-repeat="rateItem in serviceRateList">
                                                     <td>{{ rateItem.zone_from + ' - ' + rateItem.from_title }}</td>
                                                     <td>{{ rateItem.zone_to + ' - ' + rateItem.to_title }}</td>
+                                                    <td>
+                                                        <select class="form-select" ng-model="rateItem.type" ng-change="markChanged(rateItem)">
+                                                            <option value="0">Normal</option>
+                                                            <option value="1">Multiplier</option>
+                                                        </select>
+                                                    </td>
                                                     <td><input type="text" class="form-control" ng-model="rateItem.weight" ng-change="markChanged(rateItem)" /></td>
                                                     <td><input type="text" class="form-control" ng-model="rateItem.price" ng-change="markChanged(rateItem)" /></td>
                                                 </tr>
@@ -272,7 +286,7 @@
                     $scope.serviceZoneList = [];
                     $scope.selectedServiceID = '';
                     $scope.selectedServiceTitle = '';
-                    $scope.rateRows = [{ weight: '1', price: '1.00' }];
+                    $scope.rateRows = [{ type: '0', weight: '1', price: '1.00' }];
                 });
             });
 
@@ -306,6 +320,7 @@
                         result.push({
                             service_id: $scope.selectedServiceID,
                             from_zone: from,
+                            type: rate.type,
                             to_zone: to,
                             weight: rate.weight,
                             price: rate.price
@@ -335,10 +350,10 @@
 
         }
 
-        $scope.rateRows = [{ weight: '1', price: '1.00' }];
+        $scope.rateRows = [{ type: '0', weight: '1', price: '1.00' }];
 
         $scope.addRow = function() {
-            $scope.rateRows.push({ weight: '1', price: '1.00' });
+            $scope.rateRows.push({ type: '0', weight: '1', price: '1.00'});
         };
 
         $scope.removeRow = function(index) {
@@ -380,7 +395,7 @@
         $scope.markChanged = function(rateItem) {
             const original = $scope.originalServiceRateList.find(item => item.service_rate_id === rateItem.service_rate_id);
 
-            const isChanged = rateItem.weight != original.weight || rateItem.price != original.price;
+            const isChanged = rateItem.weight != original.weight || rateItem.price != original.price || rateItem.type != original.type;
 
             const alreadyTracked = $scope.editedRates.find(item => item.service_rate_id === rateItem.service_rate_id);
 

@@ -16,6 +16,7 @@ class Service_rate_model extends Model {
         'zone_from',
         'zone_to',
         'weight',
+        'type',
         'price',
     ];
 }

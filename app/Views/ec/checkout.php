@@ -92,10 +92,10 @@
                     <div class="row" ng-if="needShipping == true">
                         <div class="form-group my-2">
                             <label class="form-label" for="service">Service</label>
-                            <select class="form-control" ng-model="formData.service" name="service" id="service" ng-options="service.service_id as service.title for service in serviceList" required>
+                            <select class="form-control" ng-model="formData.service" name="service" id="service" ng-options="(service.service_id+'|'+service.rate_price) as (service.service_title + ' - RM ' + service.rate_price) for service in serviceList" ng-change="addRatePrice()" required>
                             </select>
 
-                            <button type="button" class="btn btn-primary mt-3 w-100" ng-click="checkShippingRate()" ng-disabled="formData.service == null || formData.service == 0">Check shipping</button>
+                            <!-- <button type="button" class="btn btn-primary mt-3 w-100" ng-click="checkShippingRate()" ng-disabled="formData.service == null || formData.service == 0">Check shipping</button> -->
                         </div>
                     </div>
 
@@ -258,24 +258,38 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
         if($scope.needShipping) {
             localStorage.setItem('tempFinalAmount', $scope.finalAmount);
 
-            $http.get('<?= base_url('api/fetchServiceList?shipping_addr=') ?>'+$scope.user_addr)
+            // $http.get('<?= base_url('api/fetchServiceList?shipping_addr=') ?>'+$scope.user_addr)
+            //         .then((res) => {
+            //             if(res.data.status == 'Error') {
+            //                 console.log(res.data.errors);
+            //             } else {
+            //                 $scope.serviceList = res.data;
+            //                 console.log('Service List Structure:', $scope.serviceList); // Add this
+            //                 // Check if each service has service_id property
+            //                 $scope.serviceList.forEach(service => {
+            //                     console.log('Service:', service.service_id, service.title);
+            //                 });
+            //             }
+            //         })
+            //         .catch((err) => {
+            //             $scope.serviceList = [];
+            //             console.log(err);
+            //         })
+
+            const data = {
+                'company_addr'  : 'Johor',
+                'shipping_addr' : $scope.user_addr,
+                'weight'        : $scope.totalWeight,
+            }
+
+            $http.post('<?= base_url('api/get_service_price') ?>', data)
                     .then((res) => {
-                        if(res.data.status == 'Error') {
-                            console.log(res.data.errors);
-                        } else {
-                            $scope.serviceList = res.data;
-                            console.log('Service List Structure:', $scope.serviceList); // Add this
-                            // Check if each service has service_id property
-                            $scope.serviceList.forEach(service => {
-                                console.log('Service:', service.service_id, service.title);
-                            });
-                        }
+                        $scope.serviceList = res.data;
                     })
                     .catch((err) => {
-                        $scope.serviceList = [];
+                        $scope.service = [];
                         console.log(err);
-                    })
-            
+                    });
         } else {
             $scope.shippingFee      = parseFloat(0.00).toFixed(2);
             $scope.formData.service = '';
@@ -398,28 +412,38 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
         }
     }
 
-    $scope.checkShippingRate = function () {
-        if($scope.shippingFee != '0.00') return;
+    // $scope.checkShippingRate = function () {
+    //     if($scope.shippingFee != '0.00') return;
 
-        const data = {
-            'company_addr'  : 'Johor',
-            'shipping_addr' : $scope.user_addr,
-            'service_id'    : $scope.formData.service,
-            'weight'        : $scope.totalWeight,
-        }
+    //     const data = {
+    //         'company_addr'  : 'Johor',
+    //         'shipping_addr' : $scope.user_addr,
+    //         'service_id'    : $scope.formData.service,
+    //         'weight'        : $scope.totalWeight,
+    //     }
 
-        $http.post('<?= base_url('api/get_service_price') ?>', data)
-                .then((res) => {
-                    if(res.data.status == 'Error') {
-                        console.log(res.data);
-                    } else {
-                        $scope.shippingFee = res.data;
-                        $scope.finalAmount = +$scope.shippingFee + +$scope.finalAmount;
-                        localStorage.setItem('finalAmount', $scope.finalAmount);
-                        $scope.shippingFee = $scope.shippingFee.toFixed(2);
-                        $scope.finalAmount = $scope.finalAmount.toFixed(2);
-                    }
-                })
+    //     $http.post('<?= base_url('api/get_service_price') ?>', data)
+    //             .then((res) => {
+    //                 if(res.data.status == 'Error') {
+    //                     console.log(res.data);
+    //                 } else {
+    //                     $scope.shippingFee = res.data;
+    //                     $scope.finalAmount = +$scope.shippingFee + +$scope.finalAmount;
+    //                     localStorage.setItem('finalAmount', $scope.finalAmount);
+    //                     $scope.shippingFee = $scope.shippingFee.toFixed(2);
+    //                     $scope.finalAmount = $scope.finalAmount.toFixed(2);
+    //                 }
+    //             })
+    // }
+
+    $scope.addRatePrice = function (item) {
+        $scope.finalAmount = localStorage.getItem('tempFinalAmount');
+        let obj = $scope.formData.service.split('|');
+        $scope.shippingFee = +obj[1];
+        $scope.finalAmount = $scope.shippingFee + +$scope.finalAmount;
+        localStorage.setItem('finalAmount', $scope.finalAmount);
+        $scope.shippingFee = $scope.shippingFee.toFixed(2);
+        $scope.finalAmount = $scope.finalAmount.toFixed(2);
     }
 });
 </script>

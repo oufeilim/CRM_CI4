@@ -182,7 +182,7 @@ class Service extends BaseController
                     $logo_path = $oriLogo;
                 }
 
-                $modified = $service_model->insert([
+                $modified = $service_model->update($id, [
                     'modified_date'  => date('Y-m-d H:i:s'),
                     'title'         => $title,
                     'description'   => $description,
@@ -434,6 +434,7 @@ class Service extends BaseController
                 'service_id'    => $row['service_id'],
                 'zone_from'     => $row['from_zone'],
                 'zone_to'       => $row['to_zone'],
+                'type'          => $row['type'],
                 'weight'        => $row['weight'],
                 'price'         => $row['price'],
                 'created_date'  => date('Y-m-d H:i:s')
@@ -476,7 +477,7 @@ class Service extends BaseController
             $builder->where('sr.service_id', $service_id);
         }
 
-        $result = $builder->orderBy('zone_from', 'asc')->orderBy('weight', 'asc')->get()->getResult();
+        $result = $builder->orderBy('zone_from', 'asc')->orderBy('zone_to', 'asc')->orderBy('weight', 'asc')->get()->getResult();
 
         if (!$result) {
             return $this->response->setStatusCode(200)->setJSON([
@@ -495,6 +496,7 @@ class Service extends BaseController
          foreach ($data as $item) {
             $service_rate_model->update($item->service_rate_id, [
                 'weight' => $item->weight,
+                'type' => $item->type,
                 'price'  => $item->price,
                 'modified_date' => date('Y-m-d H:i:s')
             ]);
@@ -508,16 +510,27 @@ class Service extends BaseController
     }
 
     public function get_service_price() {
+        // $data = $this->request->getJSON(true);
+        // $arr = [];
+
+        // $arr['weight'] = ceil($data['weight']);
+        // $arr['company_addr'] = $data['company_addr'];
+        // $arr['shipping_addr'] = $data['shipping_addr'];
+        // $arr['service_id'] = $data['service_id'];
+
+        // $shipping_fee = ShippingService::checkServiceRate($arr);
+
+        // return $this->response->setStatusCode(200)->setJSON($shipping_fee);
+
         $data = $this->request->getJSON(true);
         $arr = [];
-
+        
         $arr['weight'] = ceil($data['weight']);
         $arr['company_addr'] = $data['company_addr'];
         $arr['shipping_addr'] = $data['shipping_addr'];
-        $arr['service_id'] = $data['service_id'];
 
-        $shipping_fee = ShippingService::checkServiceRate($arr);
+        $shipping_fee_list = ShippingService::checkServiceRateV2($arr);
 
-        return $this->response->setStatusCode(200)->setJSON($shipping_fee);
+        return $this->response->setStatusCode(200)->setJSON($shipping_fee_list);
     }
 }
