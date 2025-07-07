@@ -110,7 +110,6 @@ class Product extends BaseController
                     $extension = $image->getClientExtension();
 
                     $imageName = $slug . '_' . date('YmdHis') . '.' . $extension;
-                    dd(WRITEPATH);
                     $image->move(WRITEPATH . 'uploads/product/', $imageName);
                     $image_path = 'uploads/product/' . $imageName;
                 }

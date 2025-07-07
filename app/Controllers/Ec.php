@@ -5,20 +5,30 @@ namespace App\Controllers;
 use App\Models\Category_model;
 use App\Models\Product_model;
 use App\Models\Cart_model;
+use App\Models\Topup_request_model;
+use App\Models\Wallet_log_model;
 use Exception;
 
 class Ec extends BaseController
 {
-    private $data = [];
+    protected $data = [];
+    protected $wallet;
+    protected $balance;
+
+    public function __construct() {
+        $this->wallet = service('wallet');
+        $this->balance = $this->wallet->checkBalance('3');
+        $this->data['balance'] = $this->balance;
+    }
 
     public function index()
     {
-        return view('ec/header').view('ec/index').view('ec/footer');
+        return view('ec/header', $this->data).view('ec/index').view('ec/footer');
     }
 
     public function category()
     {
-        return view('ec/header').view('ec/category').view('ec/footer');
+        return view('ec/header', $this->data).view('ec/category').view('ec/footer');
     }
 
     public function fetchCategoryList() {
@@ -51,7 +61,7 @@ class Ec extends BaseController
     
     public function category_product_list($id, $slug)
     {
-        return view('ec/header').view('ec/category_product_list').view('ec/footer');
+        return view('ec/header', $this->data).view('ec/category_product_list').view('ec/footer');
     }
 
     public function getCategoryProductList($id, $slug) {
@@ -90,7 +100,7 @@ class Ec extends BaseController
 
     public function product_detail($id, $slug) {
 
-        return view('ec/header').view('ec/product_detail').view('ec/footer');
+        return view('ec/header', $this->data).view('ec/product_detail').view('ec/footer');
     }
 
     public function getProductDetail($id, $slug) {
@@ -126,7 +136,7 @@ class Ec extends BaseController
     }
 
     public function cart() {
-        return view('ec/header').view('ec/cart').view('ec/footer');
+        return view('ec/header', $this->data).view('ec/cart').view('ec/footer');
     }
 
     public function addItemIntoCart() {
@@ -254,13 +264,13 @@ class Ec extends BaseController
     }
 
     public function checkout() {
-        return view('ec/header').view('ec/checkout').view('ec/footer');
+        return view('ec/header', $this->data).view('ec/checkout').view('ec/footer');
     }
     
     public function checkout_success() {
         $sn = $this->request->getGet('serial_num');
 
-        return view('ec/header').view('ec/checkout_success', ['sn' => $sn]).view('ec/footer');
+        return view('ec/header', $this->data).view('ec/checkout_success', ['sn' => $sn]).view('ec/footer');
     }
 
     public function deleteCartItem() {
@@ -322,4 +332,31 @@ class Ec extends BaseController
         }
     }
 
+    public function wallet_topup() {
+        return view('ec/header', $this->data, $this->data).view('ec/wallet_topup').view('ec/footer');
+    }
+
+    public function topup_log() {
+        $topup_request_model = new Topup_request_model();
+        $topupLogList = $topup_request_model->where([
+            'is_deleted' => 0,
+            'user_id'   => 3,
+        ])->orderBy('date', 'desc')->findAll();
+
+        if(!empty($topupLogList)) {
+            $this->data['topupLogList'] = json_encode($topupLogList);
+        }
+
+        return view('ec/header', $this->data).view('ec/topup_log', $this->data).view('ec/footer');
+    }
+
+    public function getWalletBalance() {
+
+        $data = $this->request->getJSON(true);
+
+        return $this->response->setStatusCode(200)->setJSON([
+            'status'    => 'Success',
+            'balance'   => $this->data['balance'],
+        ]);
+    }
 }

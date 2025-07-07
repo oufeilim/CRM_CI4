@@ -536,6 +536,8 @@
                         return;
                     }
 
+                    console.log(postData);
+
                     $http.post('<?= base_url('sales_order_submit') ?>', postData)
                             .then((res) => {
                                 if(res.data.status == "Success") {

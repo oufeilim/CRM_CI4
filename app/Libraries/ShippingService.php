@@ -2,7 +2,6 @@
 
 namespace App\Libraries;
 
-use App\Controllers\Service;
 use App\Models\Service_model;
 use App\Models\Service_rate_model;
 use App\Models\Service_zone_model;

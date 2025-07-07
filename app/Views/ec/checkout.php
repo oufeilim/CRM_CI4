@@ -167,7 +167,7 @@
 </div>
 
 <script>
-angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootScope, $http, $window, cartService) {
+angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootScope, $http, $window, cartService, walletService) {
 
     if (performance.getEntriesByType("navigation")[0]?.type === "reload") {
         localStorage.removeItem('promoInfo');
@@ -302,7 +302,18 @@ angular.module('myApp').controller('checkoutFormCtrl', function($scope, $rootSco
     
     // #region Insert Sales Order
     $scope.submitForm = function () {
-        if(confirm('Do you really want to place your order?')) {
+        if(confirm('Do you really want to place your order?')) {        
+            
+            if($scope.payment_method == '2') {
+                let currentBalance = walletService.getBalance();
+                let afterBalance = +currentBalance - +$scope.finalAmount;
+
+                if(+afterBalance < 0) {
+                    alert('Your balance is not enough, Missing RM ' + Math.abs(afterBalance).toFixed(2));
+                    return;
+                }
+            }
+
             const today = new Date();
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based

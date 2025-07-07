@@ -14,6 +14,16 @@ class Sales_order extends BaseController
 {
     private $data = [];
 
+    private $wallet;
+
+    private $balance;
+
+    public function __construct() {
+        $this->wallet = service('wallet');
+        $this->balance = $this->wallet->checkBalance('3');
+        $this->data['balance'] = $this->balance;
+    }
+
     public function sales_order_list()
     {
         return view('header').view('sales_order_list').view('footer');
@@ -140,8 +150,20 @@ class Sales_order extends BaseController
 
             }
 
-
             if($mode == "Add" || $mode == "consumerAdd") {
+                // Another checking for compare balance
+                if($payment_method == '2') {
+                    $balance = $this->data['balance'];
+                    if($final_amount > $balance) {
+                        return $this->response->setStatusCode(400)->setJSON([
+                                'status'    => 'Error',
+                                'message'   => 'Insufficient balance. Balance (RM '.$balance.') < Amount (RM '.$final_amount.')',
+                            ]);
+                    } else {
+                        $payment_status     = 1;
+                    }
+                }
+
                 // Insert sales order to get sales_order_id
                 $sales_order_model = new Sales_order_model();
 
@@ -205,6 +227,22 @@ class Sales_order extends BaseController
                     ]);
                 }
 
+                // deduct balance if method = e-walet
+                if ($mode == 'consumerAdd' && $payment_method == '2') {
+                    $balArr = [
+                        'id'            => $user_id,
+                        'amount'        => $final_amount,
+                        'title'         => 'Sales Order for User_id ('.$user_id.')',
+                        'description'   => null,
+                        'ref_table'     => 'sales_order',
+                        'ref_id'        => $inserted,
+                        'attachment'    => null,
+                        'remark'        => null,
+                    ];
+
+                    $this->wallet->modifyBalance('P', $balArr);
+                }
+
                 return $this->response->setStatusCode(200)->setJSON([
                     'status'    => 'Success',
                     'message'   => 'Data inserted.',
@@ -214,6 +252,12 @@ class Sales_order extends BaseController
                 $sales_order_model        = new Sales_order_model();
                 $sales_order_detail_model = new Sales_order_detail_model();
                 $builder                  = $sales_order_detail_model->builder();
+
+                $oriData                  = $sales_order_model->where([
+                                                'sales_order_id'    => $id,
+                                                'serial_number'     => $serial_number,
+                                                'is_deleted'        => 0,
+                                            ])->first();
 
                 $sales_order = $sales_order_model->update($id, [
                     'modified_date'      => date('Y-m-d H:i:s'),
@@ -388,6 +432,64 @@ class Sales_order extends BaseController
                             'message' => 'Failed to update sales order detail (toInsert).',
                             'errors' => $error
                         ]);
+                    }
+                }
+
+                // e-wallet
+                if($payment_method == '2') {
+                    if($oriData['payment_status'] == '1') {
+                        $added = true;
+                    } else {
+                        $added = false;
+                    }
+
+                    $data = [
+                        'id'            => $user_id,
+                        'amount'        => $final_amount,
+                        'title'         => 'Sales Order for User_id ('.$user_id.')',
+                        'description'   => null,
+                        'ref_table'     => 'sales_order',
+                        'ref_id'        => $id,
+                        'attachment'    => null,
+                        'remark'        => null,
+                    ];
+
+                    if ($oriData['user_id'] == $user_id) {
+                        switch($payment_status) {
+                            case '1':   // Approved
+                                // if original data is not approved && submitted is approved
+                                if( !$added ) {
+                                    $this->wallet->modifyBalance('P', $data);
+                                }
+
+                            break;
+                            case '0': case '2':  // Pending : Rejected
+                                // if original data is approved && submitted is pending/rejected
+                                if ( $added ) {
+                                    $this->wallet->deductBalance($user_id, $id);
+                                }
+                            break;
+                        }
+                    } 
+                    
+                    if ($oriData['user_id'] != $user_id) {
+                        if( $added ) {
+                            // Old user
+                            $this->wallet->deductBalance($oriData['user_id'], $id);
+
+                            // New user
+                            $this->wallet->modifyBalance('P', $data);
+                        }
+
+                        if ( !$added && $payment_status == '1' ) {
+                            $this->wallet->modifyBalance('P', $data);
+                        }
+                    }
+
+                    // if pending/failed to paid
+                    if ($oriData['payment_status'] != '1' && $payment_method == '1') {
+                        
+                        $this->wallet->modifyBalance('P', $data);
                     }
                 }
 

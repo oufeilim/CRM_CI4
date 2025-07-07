@@ -134,6 +134,34 @@ $routes->post('/api/updateServiceRates', 'Service::updateServiceRates');
 /* End Service Rate */
 
 
+/* Start Wallet Log */
+$routes->get('/wallet_log_list', 'Wallet_log::wallet_log_list');
+
+$routes->get('/api/fetchWalletLogList', 'Wallet_log::fetchWalletLogList');
+
+$routes->get('/wallet_log_upsert', 'Wallet_log::wallet_log_upsert');
+$routes->get('/wallet_log_upsert/(:num)', 'Wallet_log::wallet_log_upsert/$1');
+$routes->post('/wallet_log_submit', 'Wallet_log::wallet_log_submit');
+$routes->post('/wallet_log_del', 'Wallet_log::wallet_log_del');
+/* End Wallet Log */
+
+
+/* Start Topup Request */
+$routes->get('/topup_request_list', 'Topup_request::topup_request_list');
+
+$routes->get('/api/fetchTopupRequestList', 'Topup_request::fetchTopupRequestList');
+
+$routes->get('/topup_request_upsert', 'Topup_request::topup_request_upsert');
+$routes->get('/topup_request_upsert/(:num)', 'Topup_request::topup_request_upsert/$1');
+$routes->post('/topup_request_submit', 'Topup_request::topup_request_submit');
+$routes->post('/topup_request_del', 'Topup_request::topup_request_del');
+/* End Topup Request */
+
+
+/******************************************************************************************************************************
+ * Below EC
+ */
+
 /* Start EC */
 $routes->get('/ec', 'Ec::index');
 $routes->get('/ec/category', 'Ec::category');
@@ -158,6 +186,13 @@ $routes->post('/api/ec/updateCartItemQty', 'Ec::updateCartItemQty');
 $routes->post('/api/ec/deleteCartItem', 'Ec::deleteCartItem');
 $routes->post('/api/ec/deleteCartItems', 'Ec::deleteCartItems');
 /* End EC Cart */
+
+
+/* Start EC Wallet */
+$routes->get('/ec/wallet_topup', 'Ec::wallet_topup');
+$routes->get('/ec/topup_log', 'Ec::topup_log');
+$routes->post('/api/ec/getWalletBalance', 'Ec::getWalletBalance');
+/* End EC Wallet */
 
 
 /* Start Checkout */

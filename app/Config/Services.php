@@ -29,4 +29,13 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+     public static function wallet(bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('wallet');
+        }
+
+        return new \App\Libraries\Wallet();
+    }
 }

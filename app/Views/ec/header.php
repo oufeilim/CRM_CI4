@@ -160,18 +160,55 @@
                 };
             })
 
-            .controller('headerView', function($scope, $rootScope, cartService) {
+            .factory('walletService', function($http) {
+                let balance = 0;
+
+                return {
+                    getBalance: () => balance,
+                    setBalance: (val) => balance = val,
+                    fetchBalance: () => {
+                        return $http.post('/api/ec/getWalletBalance', {'user_id': 3})
+                                    .then((res) => {
+                                        if(res.data.status == 'Success') {
+                                            balance = res.data.balance;
+                                            return balance;
+                                        } else {
+                                            return null;
+                                        }
+                                    })
+                    },
+                    compareBalance: (val) => {
+                        if ( +val > balance ) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            })
+
+            .controller('headerView', function($scope, $rootScope, cartService, walletService) {
                 $scope.cartQty = 0;
+                $scope.balance = 0;
 
                 cartService.getCartItems().then(function(items) {
-                    $scope.cartQty = cartService.getCartQty();;
+                    $scope.cartQty = cartService.getCartQty();
                 });
-
+                
                 var cartUpdating = $rootScope.$on('cartUpdated', function(event, qty) {
                     $scope.cartQty = qty;
                 });
 
+                walletService.fetchBalance().then(function(balance) {
+                    $scope.balance = balance;
+                });
+
+                var balanceUpdating = $rootScope.$on('balanceUpdated', function(event, balance) {
+                    $scope.balance = balance;
+                });
+
                 $scope.$on('$destroy', cartUpdating );
+                $scope.$on('$destroy', balanceUpdating );
             })
         </script>
     </head>
@@ -258,7 +295,19 @@
                         <strong>E-commerce</strong>
                     </a>
                     <div class="d-flex ms-auto align-items-center">
-                        <a class="btn p-0 bg-transparent border-0 mx-4 position-relative" href="<?= base_url('ec/cart') ?>">
+                        <div class="dropdown">
+                            <button class="d-flex align-items-center justify-content-center btn p-0 bg-transparent border-0 mx-4 position-relative" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                    <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                                </svg>
+                                <span class="ms-2">RM {{ balance }}</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="<?= base_url('ec/wallet_topup') ?>">Wallet Topup</a></li>
+                                <li><a class="dropdown-item" href="<?= base_url('ec/topup_log') ?>">Topup Log</a></li>
+                            </ul>
+                        </div>
+                        <a class="d-flex align-items-center justify-content-center btn p-0 bg-transparent border-0 mx-4 position-relative" href="<?= base_url('ec/cart') ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                             </svg>
